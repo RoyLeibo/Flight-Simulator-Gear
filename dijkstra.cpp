@@ -39,8 +39,6 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                     // if a '.' has found, insert it to the temp string
                     if (next_char == '.') {
                         tempString += next_char ;
-                        parseExpression.push_back(tempString) ;
-                        tempString = "" ;
                         index_Count++ ;
                         next_char = expression[index_Count];
                         continue ;
