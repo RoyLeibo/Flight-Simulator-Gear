@@ -89,6 +89,7 @@ map<string,Maps> maps::create_map_map()
     return map_map;
 
 }
+// comment
 
 //crate map of command ****to check if there is way to return refrens if map***
 map<string, int> maps::create_map_command()
