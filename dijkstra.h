@@ -23,11 +23,11 @@ using namespace std ;
 class dijkstra {
 
 public:
-    static double calc (string expression) ;
+    double calc (string expression, maps* myMaps) ;
 
 private:
     vector<string> convert_to_vector (string expression, maps* myMaps) ;
-    vector<string> shunting_Yard(vector <string> expression) ;
+    vector<string> shunting_Yard(vector <string> expression, maps* myMaps) ;
     double postFixEva(vector <string> expression) ;
 
 };
