@@ -5,8 +5,18 @@
 #ifndef PORCJECT_WHILECOMMEND_H
 #define PORCJECT_WHILECOMMEND_H
 
+#include "command.h"
+#include "maps.h"
+#include <vector>
 
-class whilecommend {
+class whilecommend : public command {
+    private:
+        vector<vector<string>> s_vec;
+        maps* s_map;
+
+    public:
+        whilecommend(vector<vector<string>> vec, maps* map);
+        virtual void execute();
 
 };
 

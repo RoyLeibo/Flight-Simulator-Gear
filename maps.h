@@ -9,7 +9,7 @@
 #include <string>
 #include <iterator>
 
-enum Maps {Map_command, Symbols_table, Map_path, Operator_Priority_map, Read_map};
+enum Maps {Map_command, Symbols_table, Map_path, Operator_Priority_map, Read_map, Map_operators};
 using namespace std;
 
 class maps {
@@ -20,6 +20,7 @@ class maps {
         map<string,string> s_map_path;
         map<char,int> s_map_operator_priority ;
         map<string,double> s_map_read;
+        map<string,int>s_map_operators;
 
     public:
         maps();
@@ -31,7 +32,8 @@ class maps {
         string get_string(string table,string key);
         map<string,Maps>create_map_map();
         map<string, int>create_map_command();
-        map<char,int> create_map_operator_priority() ;
+        map<char,int> create_map_operator_priority();
+        map<string,int> create_map_operators();
         map<string,double> create_map_read() ;
         bool is_value_in_map(string table, string value);
         map<string,double>::iterator begin_it() ;

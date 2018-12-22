@@ -3,6 +3,7 @@
 //
 
 #include "sleep.h"
+#include <chrono>
 
 sleep::sleep(double time)
 {
@@ -10,5 +11,5 @@ sleep::sleep(double time)
 }
 void sleep:: execute()
 {
-    //add command;
+    chrono::seconds(s_time);
 }
