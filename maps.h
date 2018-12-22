@@ -36,6 +36,7 @@ class maps {
         bool is_value_in_map(string table, string value);
         map<string,double>::iterator begin_it() ;
         map<string,double>::iterator end_it() ;
+        void deletd_value(string key);
 };
 
 

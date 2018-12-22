@@ -214,3 +214,10 @@ map<string,double>::iterator maps::begin_it() {
 map<string,double>::iterator maps::end_it() {
     return s_map_read.end() ;
 }
+
+void maps::deletd_value(string key)
+{
+    map<string,double>::iterator id;
+    id = s_symbole_tables.find(key);
+    s_symbole_tables.erase(id);
+}
