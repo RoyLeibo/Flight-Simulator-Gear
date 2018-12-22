@@ -73,12 +73,12 @@ vector<std::string> controler::lexes(string line)
         }
         else if(!isspace(current_char))
         {
-            word = word + current_char;
+            word +=  current_char;
         }
         if(index == line.length()-TWO )
         {
 
-            word = word + next_char;
+            word +=  next_char;
         }
 
     }
@@ -157,19 +157,31 @@ void controler::parsar(vector<string> vec)
             //if the commend is print
             case 5:
                 index++;
+                //it is number
                 if(string_isdigit(vec.at(index)))
                 {
 
-                    commendExpression(print(stod(vec.at(index)),s_map)).culculate();
+                    commendExpression(printCommend(stod(vec.at(index)))).culculate();
                 }
+                //it is variable that found in symbole tables
                 else if(s_map->is_value_in_map("symbols_tables",vec.at(index)))
                 {
-                    commendExpression(print(s_map->get_double("symbols_tables",vec.at(index)),s_map)).culculate();
+                    commendExpression(printCommend(s_map->get_double("symbols_tables",vec.at(index)))).culculate();
                 }
-                //print string
+                //it is variable the have on hem bind
+                else if(s_map->is_value_in_map("map_path", vec.at(index)))
+                {
+                    commendExpression(printCommend(s_map->get_double("read_map",vec.at(index)))).culculate();
+                }
+                //if it string
+                else if(vec.at(index)[0] == '"')
+                {
+                    commandExpression(printCommend(vec.at(index))).culculate();
+                }
+                //it is phrase
                 else
                 {
-                    commandExpression(print(vec.at(index),s_map)).culculate();
+                    commandExpression(printCommend(dijkstra().calc(vec.at(index),s_map))).culculate();
                 }
                 break;
             //commend sleep
