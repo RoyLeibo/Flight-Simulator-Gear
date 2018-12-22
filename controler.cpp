@@ -12,6 +12,8 @@
 #include "printCommend.h"
 #include "equal.h"
 #include "sleep.h"
+#include "whilecommend.h"
+#include "ifcommend.h"
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -19,6 +21,11 @@
 controler::controler()
 {
     s_map = new maps();
+}
+
+controler::controler(maps* map)
+{
+    s_map = map;
 }
 
 //get string
@@ -251,11 +258,11 @@ void controler::command_while_if(vector<string> vec, bool flg)
     }
     if (flg == true)
     {
-        commendExpression(whilecommend(commend)).culculate();
+        commendExpression():whilecommend(commend, s_map)).culculate();
     }
     else
     {
-        commendExpression(ifcommend(commend)).culculate();
+        commendExpression():ifcommend(commend, s_map)).culculate();
     }
 }
 

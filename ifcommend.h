@@ -6,8 +6,19 @@
 #define PORCJECT_IFCOMMEND_H
 
 
-class ifcommend {
+#include "command.h"
+#include "vector"
+#include "maps.h"
 
+class ifcommend :public command
+{
+    private:
+        vector<vector<string>> s_vec;
+        maps* s_map;
+    public:
+        ifcommend(vector<vector<string>> vector, maps* map);
+        void do_if();
+        virtual void execute();
 };
 
 
