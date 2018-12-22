@@ -12,7 +12,8 @@ maps::maps()
     s_map_command = create_map_command();
     s_map_map = create_map_map();
     s_map_operator_priority = create_map_operator_priority();
-    s_map_read = create_map_read() ;
+    s_map_read = create_map_read();
+    s_map_operators = create_map_operators();
 
 }
 
@@ -50,6 +51,8 @@ int maps::get_int(string table,string key)
     {
         case Map_command:
             return s_map_command[key];
+        case Map_operators:
+            return s_map_operators[key];
     }
 }
 
@@ -59,6 +62,8 @@ int maps::get_int(string table,char key) {
     {
         case Operator_Priority_map:
             return s_map_operator_priority[key];
+        case Map_operators:
+            return s_map_operators[key];
     }
 }
 
@@ -94,6 +99,7 @@ map<string,Maps> maps::create_map_map()
     map_map.insert(pair<string,Maps>("map_path",Map_path));
     map_map.insert(pair<string,Maps>("operator_priority_map",Operator_Priority_map));
     map_map.insert(pair<string,Maps>("read_map",Read_map));
+    map_map.insert(pair<string,Maps>("map_operators",Map_operators));
     return map_map;
 
 }
@@ -212,4 +218,16 @@ void maps::deletd_value(string key)
     map<string,double>::iterator id;
     id = s_symbole_tables.find(key);
     s_symbole_tables.erase(id);
+}
+
+map<string,int> maps:: create_map_operators()
+{
+    map<string,int> res;
+    res.insert(pair<string,int>("<",1));
+    res.insert(pair<string,int>(">",2));
+    res.insert(pair<string,int>("==",3));
+    res.insert(pair<string,int>("!=",4));
+    res.insert(pair<string,int>(">=",5));
+    res.insert(pair<string,int>("<=",6));
+    return res;
 }

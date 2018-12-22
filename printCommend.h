@@ -6,8 +6,16 @@
 #define PORCJECT_PRINT_H
 
 
-class print {
+#include "command.h"
 
+class printCommend : public command
+{
+    private:
+        string s_string_to_print;
+
+    public:
+        printCommend(string str_to_print);
+        virtual void execute();
 };
 
 
