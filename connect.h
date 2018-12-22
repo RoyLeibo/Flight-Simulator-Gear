@@ -5,14 +5,15 @@
 #ifndef UNTITLED11_CONNECT_H
 #define UNTITLED11_CONNECT_H
 
+#include "command.h"
 
-class connect {
+class connect : public command{
 
-    int IP ;
+    string IP ;
     int port ;
 
-    connect(int IP, int port) ;
-    void execute() ;
+    connect(string IP, double port) ;
+    virtual void execute() ;
 
 };
 

@@ -3,6 +3,10 @@
 //
 
 #include "controler.h"
+#include "dijkstra.h"
+#include "command.h"
+#include "openDataServer.h"
+#include "connect.h"
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -99,7 +103,7 @@ void controler::parsar(vector<string> vec)
         {
            if(vec.at(index + 1) == "=")
            {
-               commandExpression(equal(vec.at(index),dijkstra(vec.at(index + 2),s_map), s_map)).culculate();
+               commandExpression(equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map)).culculate();
            }
            else
            {
@@ -114,15 +118,16 @@ void controler::parsar(vector<string> vec)
         {
             //if the commend is openDataServer
             case 1:
-                commandExpression(openDataServer(dijkstra(vec.at(index++),s_map), dijkstra(vec.at(index++),s_map))).culculate();
+                commandExpression():openDataServer(dijkstra().calc(vec.at(index++),s_map),
+                        dijkstra().calc(vec.at(index++),s_map))).culculate();
                 break;
                 //if the commend is connect
             case 2:
-                commandExpression(connect(vec.at(index++),dijkstra(vec.at(index++),s_map))).culculate();
+                commandExpression():connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).culculate();
                 break;
                 //if the commend is ver
             case 3:
-                commandExpression(var(index++)).culculate();
+                commandExpression(var(index++),s_map).culculate();
                 //if it only site variable
                 if(index >= vec.size())
                 {
@@ -139,7 +144,7 @@ void controler::parsar(vector<string> vec)
                     //is it equals to variable / number/ math phrase
                 else
                 {
-                    commandExpression(equal(vec.at(index - TWO),dijkstra(vec.at(index),s_map), s_map)).culculate();
+                    commandExpression(equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map)).culculate();
                 }
                 break;
             //if the commend is print

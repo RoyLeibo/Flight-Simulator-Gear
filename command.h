@@ -12,8 +12,8 @@ using namespace std ;
 
 class command {
 
-public:
-    void execute (string param) ;
+    public:
+        virtual void execute ();
 };
 
 

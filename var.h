@@ -6,7 +6,17 @@
 #define PORCJECT_VAR_H
 
 
-class var {
+#include "command.h"
+#include "maps.h"
+
+class var : public command {
+    private:
+        string s_variable;
+        maps* s_map;
+
+    public:
+        var(string variable, Maps* map);
+        virtual void execute ();
 
 };
 

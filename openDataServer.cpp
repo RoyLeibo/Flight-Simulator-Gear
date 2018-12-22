@@ -4,7 +4,7 @@
 
 #include "openDataServer.h"
 
-openDataServer::openDataServer(int port, int hz) {
+openDataServer::openDataServer(double port, double hz) {
     if (port > 0) {
         this->port = port;
     }

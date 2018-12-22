@@ -8,12 +8,12 @@
 #include "command.h"
 
 class openDataServer: public command {
-
-    int port ;
-    int hz ;
-
-    openDataServer(int port, int hz) ;
-    void execute() ;
+    private:
+        double port ;
+        double hz ;
+    public:
+        openDataServer(double port, double hz) ;
+        virtual void execute() ;
 
 };
 
