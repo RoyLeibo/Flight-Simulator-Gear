@@ -10,6 +10,8 @@
 #include "var.h"
 #include "bind.h"
 #include "printCommend.h"
+#include "equal.h"
+#include "sleep.h"
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -111,7 +113,7 @@ void controler::parsar(vector<string> vec)
             }
             else if(vec.at(index + ONE) == "=")
             {
-                commandExpression(equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map)).culculate();
+                commandExpression():equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map)).culculate();
             }
             else
             {
@@ -152,7 +154,7 @@ void controler::parsar(vector<string> vec)
                 //is it equals to variable / number/ math phrase
                 else
                 {
-                    commandExpression(equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map)).culculate();
+                    commandExpression():equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map)).culculate();
                 }
                 break;
             //if the commend is print
@@ -188,7 +190,7 @@ void controler::parsar(vector<string> vec)
             //commend sleep
             case 6:
                 index++;
-                commendExpression(sleep(dijkastra(vec.at(index)))).culculate();
+                commendExpression():sleep(dijkstra().calc(vec.at(index),s_map)).culculate();
                 break;
 
             //commend while

@@ -3,3 +3,12 @@
 //
 
 #include "sleep.h"
+
+sleep::sleep(double time)
+{
+    s_time = time;
+}
+void sleep:: execute()
+{
+    //add command;
+}

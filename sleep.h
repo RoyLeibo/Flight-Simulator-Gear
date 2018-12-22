@@ -6,8 +6,16 @@
 #define PORCJECT_SLEEP_H
 
 
-class sleep {
+#include "command.h"
 
+class sleep : public command
+{
+    private:
+    double s_time;
+
+    public:
+    sleep(double time);
+    virtual void execute();
 };
 
 
