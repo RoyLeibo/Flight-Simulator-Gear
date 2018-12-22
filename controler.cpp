@@ -7,6 +7,7 @@
 #include "command.h"
 #include "openDataServer.h"
 #include "connect.h"
+#include "var.h"
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -101,14 +102,19 @@ void controler::parsar(vector<string> vec)
         //if yet
         else
         {
-           if(vec.at(index + 1) == "=")
-           {
-               commandExpression(equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map)).culculate();
-           }
-           else
-           {
-               exit(ONE);
-           }
+            //
+            if(vec.at(index + TWO) == "bind" )
+            {
+                commandExpression(bind(vec.at(index),vec.at(index+ 3),s_map)).culculate();
+            }
+            else if(vec.at(index + ONE) == "=")
+            {
+                commandExpression(equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map)).culculate();
+            }
+            else
+            {
+                exit(ONE);
+            }
         }
     }
     else
@@ -121,13 +127,13 @@ void controler::parsar(vector<string> vec)
                 commandExpression():openDataServer(dijkstra().calc(vec.at(index++),s_map),
                         dijkstra().calc(vec.at(index++),s_map))).culculate();
                 break;
-                //if the commend is connect
+            //if the commend is connect
             case 2:
                 commandExpression():connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).culculate();
                 break;
-                //if the commend is ver
+            //if the commend is ver
             case 3:
-                commandExpression(var(index++),s_map).culculate();
+                commandExpression():var(index++),s_map).culculate();
                 //if it only site variable
                 if(index >= vec.size())
                 {
@@ -139,9 +145,9 @@ void controler::parsar(vector<string> vec)
                 //if the next command is bind
                 if(vec.at(index) == "bind")
                 {
-                    commandExpression(bind(vec.at(index - TWO),vec.at(index+ONE),s_map)).culculate();
+                    commandExpression(bind(vec.at(index - TWO),vec.at(index + ONE),s_map)).culculate();
                 }
-                    //is it equals to variable / number/ math phrase
+                //is it equals to variable / number/ math phrase
                 else
                 {
                     commandExpression(equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map)).culculate();

@@ -6,8 +6,18 @@
 #define PORCJECT_BIND_H
 
 
-class bind {
+#include "command.h"
+#include "maps.h"
 
+class bind : public command
+{
+    private:
+        string s_key;
+        string s_path;
+        maps* map;
+    public:
+        bind(string key,string path,maps* map);
+        virtual void execute();
 };
 
 

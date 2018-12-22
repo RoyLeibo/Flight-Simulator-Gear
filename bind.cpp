@@ -3,3 +3,12 @@
 //
 
 #include "bind.h"
+
+bind::bind(string key,string path,maps* map)
+{
+
+}
+void bind:: execute()
+{
+
+}
