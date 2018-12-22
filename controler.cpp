@@ -8,6 +8,7 @@
 #include "openDataServer.h"
 #include "connect.h"
 #include "var.h"
+#include "bind.h"
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -105,7 +106,7 @@ void controler::parsar(vector<string> vec)
             //
             if(vec.at(index + TWO) == "bind" )
             {
-                commandExpression(bind(vec.at(index),vec.at(index+ 3),s_map)).culculate();
+                commandExpression():bind(vec.at(index),vec.at(index+ 3),s_map)).culculate();
             }
             else if(vec.at(index + ONE) == "=")
             {
@@ -145,7 +146,7 @@ void controler::parsar(vector<string> vec)
                 //if the next command is bind
                 if(vec.at(index) == "bind")
                 {
-                    commandExpression(bind(vec.at(index - TWO),vec.at(index + ONE),s_map)).culculate();
+                    commandExpression():bind(vec.at(index - TWO),vec.at(index + ONE),s_map)).culculate();
                 }
                 //is it equals to variable / number/ math phrase
                 else

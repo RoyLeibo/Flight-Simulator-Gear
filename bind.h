@@ -14,7 +14,7 @@ class bind : public command
     private:
         string s_key;
         string s_path;
-        maps* map;
+        maps* s_map;
     public:
         bind(string key,string path,maps* map);
         virtual void execute();
