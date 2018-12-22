@@ -34,8 +34,6 @@ class maps {
         map<char,int> create_map_operator_priority() ;
         map<string,double> create_map_read() ;
         bool is_value_in_map(string table, string value);
-        map<string,double>::iterator begin_it() ;
-        map<string,double>::iterator end_it() ;
         void deletd_value(string key);
 };
 

@@ -11,6 +11,8 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <vector>
+#include <thread>
+#include <chrono>
 #include "maps.h"
 
 using namespace std ;
@@ -19,8 +21,7 @@ using namespace std ;
 class IO {
 
 public:
-    IO() ;
-    void read_from_simulator(int newsockfd, maps* myMaps) ;
+    void read_from_simulator(char* buffer, int newsockfd, maps* myMaps, int hz) ;
     vector<double> parser(char* buffer) ;
     void update_map(vector<double> line_vector, maps* myMaps) ;
 

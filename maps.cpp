@@ -207,14 +207,6 @@ bool maps::is_value_in_map(string table, string value)
     }
 }
 
-map<string,double>::iterator maps::begin_it() {
-    return s_map_read.begin() ;
-}
-
-map<string,double>::iterator maps::end_it() {
-    return s_map_read.end() ;
-}
-
 void maps::deletd_value(string key)
 {
     map<string,double>::iterator id;
