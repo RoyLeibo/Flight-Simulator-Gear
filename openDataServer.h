@@ -21,8 +21,10 @@ class openDataServer: public command {
     private:
         double port ;
         double hz ;
+        maps* myMaps ;
+
     public:
-        openDataServer(double port, double hz) ;
+        openDataServer(double port, double hz, maps* myMaps) ;
         virtual void execute() ;
 
 };

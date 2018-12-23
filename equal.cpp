@@ -19,6 +19,6 @@ void equal:: execute()
     }
     else
     {
-        s_map->set_double("read_map", s_variable);
+        s_map->set_double("read_map", s_variable, s_num);
     }
 }

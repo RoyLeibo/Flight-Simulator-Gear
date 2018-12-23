@@ -14,44 +14,33 @@ Connect::Connect(string IP, double port, IO* io) {
 }
 
 void Connect::execute() {
-    int sockfd, portno;
+    int portno;
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
-    char buffer[256] ;
-    bzero(buffer,256);
-    string s = "set controls/flight/rudder 1\r\n" ;
-    for (int i = 0; i < s.length() ; i++) {
-        buffer[i] = s[i] ;
-    }
+    g_sockfd = socket(AF_INET, SOCK_STREAM, 0); // calling to socket function
 
-    portno = this->port;
-
-    /* Create a socket point */
-    g_sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
-    if (g_sockfd < 0) {
-        perror("ERROR opening socket");
+    if (g_sockfd < 0) { // if the function failed, print error
+        perror("cannot open socket, please try again");
         exit(1);
     }
 
-    server = gethostbyname(this->IP.c_str());
+    server = gethostbyname(this->IP.c_str()); // update the IP address to connect
 
-    if (server == NULL) {
-        fprintf(stderr,"ERROR, no such host\n");
+    if (server == NULL) { // if IP update is failed, print error
+        fprintf(stderr,"cannot locate host\n");
         exit(0);
     }
 
+    // update socket's data
     bzero((char *) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
-    serv_addr.sin_port = htons(portno);
+    serv_addr.sin_port = htons(this->port);
 
-    /* Now connect to the server */
+    // connect to server, if failed print error
     if (connect(g_sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
-        perror("ERROR connecting");
+        perror("cannot connect to server");
         exit(1);
     }
-
-
 }

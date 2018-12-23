@@ -9,7 +9,7 @@
 #include "printCommend.h"
 #include "maps.h"
 
-class equal : public printCommend
+class equal : public command
 {
     private:
         string s_variable;
@@ -17,7 +17,7 @@ class equal : public printCommend
         maps* s_map;
 
     public:
-        equal(string variable, double num, maps map);
+        equal(string variable, double num, maps* map);
         virtual void execute();
 };
 
