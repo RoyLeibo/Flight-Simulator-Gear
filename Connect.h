@@ -16,12 +16,12 @@
 #include "command.h"
 #include "IO.h"
 
-class connect : public command{
+class Connect : public command{
 
     string IP ;
     int port ;
 
-    connect(string IP, double port, IO* io) ;
+    Connect(string IP, double port, IO* io) ;
     virtual void execute() ;
 
 };

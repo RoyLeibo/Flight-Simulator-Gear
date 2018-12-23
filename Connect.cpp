@@ -2,9 +2,9 @@
 // Created by roy on 12/17/18.
 //
 
-#include "connect.h"
+#include "Connect.h"
 
-connect::connect(string IP, double port, IO* io) {
+Connect::Connect(string IP, double port, IO* io) {
     this->IP = IP ; // INPUT CHECK NEEDED
     if (port > 0)
     {
@@ -13,7 +13,7 @@ connect::connect(string IP, double port, IO* io) {
     }
 }
 
-void connect::execute() {
+void Connect::execute() {
     int sockfd, portno;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -28,9 +28,9 @@ void connect::execute() {
     portno = this->port;
 
     /* Create a socket point */
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    g_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
-    if (sockfd < 0) {
+    if (g_sockfd < 0) {
         perror("ERROR opening socket");
         exit(1);
     }
@@ -48,7 +48,7 @@ void connect::execute() {
     serv_addr.sin_port = htons(portno);
 
     /* Now connect to the server */
-    if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(g_sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR connecting");
         exit(1);
     }

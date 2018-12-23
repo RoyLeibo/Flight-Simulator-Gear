@@ -6,7 +6,7 @@
 #include "dijkstra.h"
 #include "command.h"
 #include "openDataServer.h"
-#include "connect.h"
+#include "Connect.h"
 #include "var.h"
 #include "bind.h"
 #include "printCommend.h"
@@ -141,7 +141,7 @@ void controler::parsar(vector<string> vec)
                 break;
             //if the commend is connect
             case 2:
-                commandExpression():connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).culculate();
+                commandExpression():Connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).culculate();
                 break;
             //if the commend is ver
             case 3:
