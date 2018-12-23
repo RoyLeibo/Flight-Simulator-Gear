@@ -15,7 +15,7 @@ class var : public command {
         maps* s_map;
 
     public:
-        var(string variable, Maps* map);
+        var(string variable, maps* map);
         virtual void execute ();
 
 };

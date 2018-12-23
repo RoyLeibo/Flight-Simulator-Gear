@@ -19,12 +19,14 @@ using namespace std ;
 
 
 class IO {
+    int sockfd ;
 
 public:
     void read_from_simulator(char* buffer, int newsockfd, maps* myMaps, int hz) ;
+    void write_to_simulator()
     vector<double> parser(char* buffer) ;
     void update_map(vector<double> line_vector, maps* myMaps) ;
-
+    void set_sockfd(int sockfd) ;
 };
 
 

@@ -59,3 +59,7 @@ void IO::update_map(vector<double> line_vector, maps* myMaps) {
     myMaps->set_double("read_map", "/controls/engines/engine/throttle",line_vector.at(21));
     myMaps->set_double("read_map", "/engines/engine/rpm",line_vector.at(22));
 }
+
+void IO::set_sockfd(int sockfd) {
+    this->sockfd = sockfd ;
+}
