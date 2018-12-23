@@ -16,6 +16,7 @@ class whilecommend : public command {
 
     public:
         whilecommend(vector<vector<string>> vec, maps* map);
+        void do_while();
         virtual void execute();
 
 };

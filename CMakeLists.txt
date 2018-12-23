@@ -8,4 +8,4 @@ add_executable(untitled11 main.cpp command.h openDataServer.cpp openDataServer.h
         binaryExpression.cpp Minus.cpp Minus.h Mul.cpp Mul.h Div.cpp Div.h Number.cpp Number.h
         maps.cpp maps.h bind.cpp bind.h controler.cpp controler.h equal.cpp equal.h ifcommend.cpp ifcommend.h
         var.cpp var.h whilecommend.cpp whilecommend.h sleep.cpp sleep.h  printCommend.cpp printCommend.h IO.cpp
-        IO.h)
+        IO.h commandExpression.cpp commandExpression.h)
