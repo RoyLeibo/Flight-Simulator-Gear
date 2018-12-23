@@ -14,6 +14,7 @@
 #include "sleep.h"
 #include "whilecommend.h"
 #include "ifcommend.h"
+#include "commandExpression.h"
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -171,17 +172,17 @@ void controler::parsar(vector<string> vec)
                 if(string_isdigit(vec.at(index)))
                 {
 
-                    commendExpression():printCommend((vec.at(index)))).culculate();
+                    commandExpression():printCommend((vec.at(index)))).culculate();
                 }
                 //it is variable that found in symbole tables
                 else if(s_map->is_value_in_map("symbols_tables",vec.at(index)))
                 {
-                    commendExpression():printCommend(to_string(s_map->get_double("symbols_tables",vec.at(index))))).culculate();
+                    commandExpression():printCommend(to_string(s_map->get_double("symbols_tables",vec.at(index))))).culculate();
                 }
                 //it is variable the have on hem bind
                 else if(s_map->is_value_in_map("map_path", vec.at(index)))
                 {
-                    commendExpression(printCommend(to_string(s_map->get_double("read_map",vec.at(index))))).culculate();
+                    commandExpression():printCommend(to_string(s_map->get_double("read_map",vec.at(index)))).culculate();
                 }
                 //if it string
                 else if(vec.at(index)[0] == '"')
@@ -197,7 +198,7 @@ void controler::parsar(vector<string> vec)
             //commend sleep
             case 6:
                 index++;
-                commendExpression():sleep(dijkstra().calc(vec.at(index),s_map)).culculate();
+                commandExpression():sleep(dijkstra().calc(vec.at(index),s_map)).culculate();
                 break;
 
             //commend while
@@ -246,6 +247,7 @@ void controler::command_while_if(vector<string> vec, bool flg)
     int counter = ZERO;
     int start = ZERO;
     int end = ZERO;
+
     while(counter < vec.size())
     {
         if(vec.at(counter) == ";")
@@ -258,11 +260,11 @@ void controler::command_while_if(vector<string> vec, bool flg)
     }
     if (flg == true)
     {
-        commendExpression():whilecommend(commend, s_map)).culculate();
+        commandExpression():whilecommend(commend, s_map)).culculate();
     }
     else
     {
-        commendExpression():ifcommend(commend, s_map)).culculate();
+        commandExpression():ifcommend(commend, s_map)).culculate();
     }
 }
 
