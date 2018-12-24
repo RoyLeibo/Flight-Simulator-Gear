@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.12.3)
 project(untitled11)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 14)
 add_executable(untitled11 main.cpp command.h openDataServer.cpp openDataServer.h Connect.cpp
         Connect.h dijkstra.cpp dijkstra.h expression.h binaryExpression.h Plus.cpp Plus.h
         binaryExpression.cpp Minus.cpp Minus.h Mul.cpp Mul.h Div.cpp Div.h Number.cpp Number.h
-        maps.cpp maps.h bind.cpp bind.h controler.cpp controler.h equal.cpp equal.h ifcommend.cpp ifcommend.h
-        var.cpp var.h whilecommend.cpp whilecommend.h sleep.cpp sleep.h  printCommend.cpp printCommend.h IO.cpp
+        maps.cpp maps.h BindCommand.cpp BindCommand.h controler.cpp controler.h Equal.cpp Equal.h Ifcommand.cpp Ifcommand.h
+        Var.cpp Var.h Whilecommend.cpp Whilecommend.h Sleep.cpp Sleep.h PrintCommand.cpp PrintCommand.h IO.cpp
         IO.h commandExpression.cpp commandExpression.h)

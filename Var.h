@@ -9,13 +9,13 @@
 #include "command.h"
 #include "maps.h"
 
-class var : public command {
+class Var : public command {
     private:
         string s_variable;
         maps* s_map;
 
     public:
-        var(string variable, maps* map);
+        Var(string variable, maps* map);
         virtual void execute ();
 
 };

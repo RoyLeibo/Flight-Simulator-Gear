@@ -2,14 +2,14 @@
 // Created by einat on 12/21/18.
 //
 
-#include "sleep.h"
+#include "Sleep.h"
 #include <chrono>
 
-sleep::sleep(double time)
+Sleep:: Sleep(double time)
 {
     s_time = time;
 }
-void sleep:: execute()
+void Sleep:: execute()
 {
     chrono::seconds(s_time);
 }

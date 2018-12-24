@@ -8,13 +8,13 @@
 
 #include "command.h"
 
-class printCommend : public command
+class PrintCommand : public command
 {
     private:
         string s_string_to_print;
 
     public:
-        printCommend(string str_to_print);
+        PrintCommand(string str_to_print);
         virtual void execute();
 };
 

@@ -2,15 +2,15 @@
 // Created by einat on 12/21/18.
 //
 
-#include "whilecommend.h"
+#include "Whilecommend.h"
 #include "controler.h"
 
-whilecommend::whilecommend(vector<vector<string>> vec, maps* map)
+Whilecommend::Whilecommend(vector<vector<string>> vec, maps* map)
 {
     s_vec = vec;
     s_map = map;
 }
-void whilecommend:: execute()
+void Whilecommend:: execute()
 {
     bool flg = true;
     while (flg) {
@@ -109,7 +109,7 @@ void whilecommend:: execute()
     }
 }
 
-void whilecommend::do_while()
+void Whilecommend::do_while()
 {
     int index = 1;
     while(index <s_vec.size())

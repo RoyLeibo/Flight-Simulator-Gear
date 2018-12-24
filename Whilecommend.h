@@ -9,13 +9,13 @@
 #include "maps.h"
 #include <vector>
 
-class whilecommend : public command {
+class Whilecommend : public command {
     private:
         vector<vector<string>> s_vec;
         maps* s_map;
 
     public:
-        whilecommend(vector<vector<string>> vec, maps* map);
+        Whilecommend(vector<vector<string>> vec, maps* map);
         void do_while();
         virtual void execute();
 

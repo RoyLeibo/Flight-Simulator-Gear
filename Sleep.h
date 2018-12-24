@@ -8,13 +8,13 @@
 
 #include "command.h"
 
-class sleep : public command
+class Sleep : public command
 {
     private:
     double s_time;
 
     public:
-    sleep(double time);
+    Sleep(double time);
     virtual void execute();
 };
 
