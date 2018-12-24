@@ -20,6 +20,16 @@ maps::maps()
 //*****check if it only to symbols tables if yes no need of switch case****
 //get map name,key and value
 //insert the value in the map in the right place
+
+void maps::insert_double(string table, string key, double value) {
+    Maps current_table = s_map_map[table];
+    switch (current_table)
+    {
+        case Read_map:
+            s_map_read.insert(pair<string,double>(key,value));
+    }
+}
+
 void maps::set_double(string table,string key,double value)
 {
     Maps current_table = s_map_map[table];
@@ -154,7 +164,7 @@ map<string,double> maps::create_map_read()
     map_read.insert(pair<string,double>("/controls/flight/elevator",0));
     map_read.insert(pair<string,double>("/controls/flight/rudder",0));
     map_read.insert(pair<string,double>("/controls/flight/flaps",0));
-    map_read.insert(pair<string,double>("/controls/engines/engine/throttle",0));
+    map_read.insert(pair<string,double>("/controls/engines/current-engine/throttle",0));
     map_read.insert(pair<string,double>("/engines/engine/rpm",0));
 }
 

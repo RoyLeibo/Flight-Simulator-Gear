@@ -67,15 +67,20 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                 index_Count += 2;
             }
             // deals with expression of '/-', '*-', '(-' and '+-' which in those cases
-            // the '-' sign is refer t negative and not minus
+            // the '-' sign is refer ut negative and not minus
             else if (((current_char == '/') || (current_char == '*') || (current_char == '(')
-                    || (current_char == '+')) && (next_char == '-')) {                 // check if there is a negative number
-                parseExpression.push_back(tempString) ;
-                tempString = "" ;
-                tempString += '-' ;
-                tempString += expression[index_Count+1] ;
-                parseExpression.push_back(tempString) ;
-                index_Count+= 3 ;
+                    || (current_char == '+')) && (next_char == '-')) { // check if there is a negative number
+                if (isdigit(expression[index_Count + 1])) {
+                    parseExpression.push_back(tempString);
+                    tempString = "";
+                    tempString += '-';
+                    tempString += expression[index_Count + 1];
+                    parseExpression.push_back(tempString);
+                    index_Count += 3;
+                }
+                else if (expression[index_Count + 1] == '(') {
+
+                }
             }
             // deals with expression of '/+' and '*+' which in this case the '+' is unnecessary
             else if (((current_char == '/') || (current_char == '*')) && (next_char == '+')) {

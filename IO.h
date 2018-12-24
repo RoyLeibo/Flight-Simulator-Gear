@@ -23,7 +23,7 @@ class IO {
 
 public:
     void read_from_simulator(int newsockfd, maps* myMaps, int hz) ;
-    void write_to_simulator(int s_num, string s_variable) ;
+    void write_to_simulator(double s_num, string s_variable) ;
     vector<double> parser(char* buffer) ;
     void update_map(vector<double> line_vector, maps* myMaps) ;
 };

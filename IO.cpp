@@ -31,7 +31,7 @@ void IO::read_from_simulator(int newsockfd, maps* myMaps, int hz) {
  * this function will write to the simulator the new variable value
  */
 
-void IO::write_to_simulator(int s_num, string s_variable) {
+void IO::write_to_simulator(double s_num, string s_variable) {
     char buffer[256] ;
     bzero(buffer,256);
     string s = "set " + s_variable + " " + to_string(s_num) + "\r\n" ; // create the command
@@ -93,6 +93,6 @@ void IO::update_map(vector<double> line_vector, maps* myMaps) {
     myMaps->set_double("read_map", "/controls/flight/elevator",line_vector.at(18));
     myMaps->set_double("read_map", "/controls/flight/rudder",line_vector.at(19));
     myMaps->set_double("read_map", "/controls/flight/flaps",line_vector.at(20));
-    myMaps->set_double("read_map", "/controls/engines/engine/throttle",line_vector.at(21));
+    myMaps->set_double("read_map", "/controls/engines/current-engine/throttle",line_vector.at(21));
     myMaps->set_double("read_map", "/engines/engine/rpm",line_vector.at(22));
 }

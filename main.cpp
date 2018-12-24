@@ -5,8 +5,6 @@
 #include "controler.h"
 using namespace std;
 
-int g_sockfd ;
-
 int main(int argc, char* argv[] ) {
     controler* control = new controler();
     ifstream pointer;

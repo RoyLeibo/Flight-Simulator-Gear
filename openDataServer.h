@@ -13,9 +13,12 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <pthread.h>
 #include "command.h"
 #include "IO.h"
 #include "maps.h"
+
+void* run_read_from_simulator(void* arg) ;
 
 class openDataServer: public command {
     private:
@@ -26,7 +29,21 @@ class openDataServer: public command {
     public:
         openDataServer(double port, double hz, maps* myMaps) ;
         virtual void execute() ;
+        void open_thread(int newsockfd) ;
 
+};
+
+// struct for the the thread that receives data from the simulator
+// and updates the variables maps
+
+struct read_struct {
+    maps* myMaps ;
+    int newsockfd ;
+    int hz ;
+
+    void read_from_simulator() ;
+    vector<double> parser(char* buffer) ;
+    void update_map(vector<double> line_vector, maps* myMaps) ;
 };
 
 

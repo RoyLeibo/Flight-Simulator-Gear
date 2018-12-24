@@ -8,6 +8,7 @@
 
 #include "printCommend.h"
 #include "maps.h"
+#include "IO.h"
 
 class equal : public command
 {
@@ -19,6 +20,7 @@ class equal : public command
     public:
         equal(string variable, double num, maps* map);
         virtual void execute();
+        void write_to_simulator(double s_num, string s_variable) ;
 };
 
 
