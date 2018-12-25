@@ -10,13 +10,13 @@
 #include "vector"
 #include "maps.h"
 
-class ifcommend :public command
+class Ifcommand :public command
 {
     private:
         vector<vector<string>> s_vec;
         maps* s_map;
     public:
-        ifcommend(vector<vector<string>> vector, maps* map);
+        Ifcommand(vector<vector<string>> vector, maps* map);
         void do_if();
         virtual void execute();
 };

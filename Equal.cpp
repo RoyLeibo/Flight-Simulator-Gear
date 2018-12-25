@@ -2,18 +2,18 @@
 // Created by einat on 12/21/18.
 //
 
-#include "equal.h"
+#include "Equal.h"
 
 // two questions: did we handle cases when some variable should be equal to other variable?
 // diffrence in the use of set_double for "symbole_table" and for insert_double
 
-equal::equal(string variable, double num, maps* map)
+Equal::Equal(string variable, double num, maps* map)
 {
     s_variable = variable;
     s_num = num;
     s_map = map;
 }
-void equal::execute()
+void Equal::execute()
 {
 
     // need to check if it should be read_map or path_map
@@ -39,7 +39,7 @@ void equal::execute()
  * this function will write to the simulator the new variable value
  */
 
-void equal::write_to_simulator(double s_num, string s_variable) {
+void Equal::write_to_simulator(double s_num, string s_variable) {
     char buffer[256] ;
     bzero(buffer,256);
     string s = "set " + s_variable + " " + to_string(s_num) + "\r\n" ; // create the command

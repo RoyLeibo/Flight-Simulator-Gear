@@ -9,16 +9,17 @@
 #include "command.h"
 #include "maps.h"
 
-class bind : public command
+class BindCommand : public command
 {
     private:
         string s_key;
         string s_path;
         maps* s_map;
     public:
-        bind(string key,string path,maps* map);
+        BindCommand(string key,string path,maps* map);
         virtual void execute();
-};
+}
 
 
 #endif //PORCJECT_BIND_H
+

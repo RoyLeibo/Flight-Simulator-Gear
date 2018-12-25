@@ -7,14 +7,14 @@
 #include "command.h"
 #include "openDataServer.h"
 #include "Connect.h"
-#include "var.h"
-#include "bind.h"
-#include "printCommend.h"
-#include "equal.h"
-#include "sleep.h"
-#include "whilecommend.h"
-#include "ifcommend.h"
-#include "commandExpression.h"
+#include "Var.h"
+#include "BindCommand.h"
+#include "PrintCommand.h"
+#include "Equal.h"
+#include "Sleep.h"
+#include "Whilecommend.h"
+#include "Ifcommand.h"
+
 #define ONE 1
 #define TWO 2
 #define ZERO 0
@@ -117,11 +117,11 @@ void controler::parsar(vector<string> vec)
             //
             if(vec.at(index + TWO) == "bind" )
             {
-                commandExpression():bind(vec.at(index),vec.at(index+ 3),s_map)).culculate();
+               BindCommand(vec.at(index),vec.at(index+ 3),s_map).execute();
             }
             else if(vec.at(index + ONE) == "=")
             {
-                commandExpression():equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map)).culculate();
+               Equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map).execute();
             }
             else
             {
@@ -136,16 +136,16 @@ void controler::parsar(vector<string> vec)
         {
             //if the commend is openDataServer
             case 1:
-                commandExpression():openDataServer(dijkstra().calc(vec.at(index++),s_map),
-                        dijkstra().calc(vec.at(index++),s_map))).culculate();
+                openDataServer(dijkstra().calc(vec.at(index++),s_map),
+                        dijkstra().calc(vec.at(index++),s_map))).execute();
                 break;
             //if the commend is connect
             case 2:
-                commandExpression():Connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).culculate();
+                Connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).execute();
                 break;
             //if the commend is ver
             case 3:
-                commandExpression():var(index++),s_map).culculate();
+                Var(vec.at(index++),s_map).execute();
                 //if it only site variable
                 if(index >= vec.size())
                 {
@@ -157,12 +157,12 @@ void controler::parsar(vector<string> vec)
                 //if the next command is bind
                 if(vec.at(index) == "bind")
                 {
-                    commandExpression():bind(vec.at(index - TWO),vec.at(index + ONE),s_map)).culculate();
+                    BindCommand(vec.at(index - TWO),vec.at(index + ONE),s_map).execute();
                 }
                 //is it equals to variable / number/ math phrase
                 else
                 {
-                    commandExpression():equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map)).culculate();
+                   Equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map).execute();
                 }
                 break;
             //if the commend is print
@@ -172,33 +172,33 @@ void controler::parsar(vector<string> vec)
                 if(string_isdigit(vec.at(index)))
                 {
 
-                    commandExpression():printCommend((vec.at(index)))).culculate();
+                    PrintCommand(vec.at(index)).execute();
                 }
                 //it is variable that found in symbole tables
                 else if(s_map->is_value_in_map("symbols_tables",vec.at(index)))
                 {
-                    commandExpression():printCommend(to_string(s_map->get_double("symbols_tables",vec.at(index))))).culculate();
+                    PrintCommand(to_string(s_map->get_double("symbols_tables",vec.at(index)))).execute();
                 }
                 //it is variable the have on hem bind
                 else if(s_map->is_value_in_map("map_path", vec.at(index)))
                 {
-                    commandExpression():printCommend(to_string(s_map->get_double("read_map",vec.at(index)))).culculate();
+                    PrintCommand(to_string(s_map->get_double("read_map",vec.at(index)))).execute();
                 }
                 //if it string
                 else if(vec.at(index)[0] == '"')
                 {
-                    commandExpression():printCommend(vec.at(index))).culculate();
+                   PrintCommand(vec.at(index)).execute();
                 }
                 //it is phrase
                 else
                 {
-                    commandExpression():printCommend(to_string(dijkstra().calc(vec.at(index),s_map)))).culculate();
+                    PrintCommand(to_string(dijkstra().calc(vec.at(index),s_map))).execute();
                 }
                 break;
             //commend sleep
             case 6:
                 index++;
-                commandExpression():sleep(dijkstra().calc(vec.at(index),s_map)).culculate();
+                Sleep(dijkstra().calc(vec.at(index),s_map)).execute();
                 break;
 
             //commend while
@@ -260,12 +260,13 @@ void controler::command_while_if(vector<string> vec, bool flg)
     }
     if (flg == true)
     {
-        commandExpression():whilecommend(commend, s_map)).culculate();
+        Whilecommend(commend, s_map).execute();
     }
     else
     {
-        commandExpression():ifcommend(commend, s_map)).culculate();
+       Ifcommand(commend, s_map).execute();
     }
 }
+
 
 

@@ -6,11 +6,11 @@
 #define PORCJECT_EQUAL_H
 
 
-#include "printCommend.h"
+#include "PrintCommand.h"
 #include "maps.h"
 #include "IO.h"
 
-class equal : public command
+class Equal : public command
 {
     private:
         string s_variable;
@@ -18,7 +18,7 @@ class equal : public command
         maps* s_map;
 
     public:
-        equal(string variable, double num, maps* map);
+        Equal(string variable, double num, maps* map);
         virtual void execute();
         void write_to_simulator(double s_num, string s_variable) ;
 };

@@ -2,16 +2,16 @@
 // Created by einat on 12/21/18.
 //
 
-#include "ifcommend.h"
+#include "Ifcommand.h"
 #include "controler.h"
+#include "dijkstra.h"
 
-
-ifcommend::ifcommend(vector<vector<string>> vec, maps* map)
+Ifcommand::Ifcommand(vector<vector<string>> vec, maps* map)
 {
     s_vec = vec;
     s_map = map;
 }
-void ifcommend:: execute()
+void Ifcommand:: execute()
 {
     double variable_one = 0;
     double variable_two = 0;
@@ -25,7 +25,7 @@ void ifcommend:: execute()
     }
     else
     {
-        variable_one = stod(s_vec[0][1]);
+        variable_one = dijkstra().calc(s_vec[0][1],s_map);
     }
     if (s_map->is_value_in_map("symbols_tables", s_vec[0][3]))
     {
@@ -37,7 +37,7 @@ void ifcommend:: execute()
     }
     else
     {
-        variable_two = stod(s_vec[0][3]);
+        variable_two = dijkstra().calc(s_vec[0][3],s_map);
     }
     switch (s_map->get_int("map_operators", s_vec[0][2]))
     {
@@ -78,7 +78,7 @@ void ifcommend:: execute()
     }
 }
 
-void ifcommend::do_if()
+void Ifcommand::do_if()
 {
     int index = 1;
     while(index <s_vec.size())
