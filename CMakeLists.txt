@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(untitled11)
 
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS -pthread)
 
 add_executable(untitled11 main.cpp command.h openDataServer.cpp openDataServer.h Connect.cpp
         Connect.h dijkstra.cpp dijkstra.h expression.h binaryExpression.h Plus.cpp Plus.h

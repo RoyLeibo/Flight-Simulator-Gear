@@ -22,7 +22,7 @@ using namespace std ;
 class IO {
 
 public:
-    void read_from_simulator(int newsockfd, maps* myMaps, int hz) ;
+    void read_from_simulator(int newsockfd, int hz, maps* myMaps) ;
     void write_to_simulator(double s_num, string s_variable) ;
     vector<double> parser(char* buffer) ;
     void update_map(vector<double> line_vector, maps* myMaps) ;

@@ -41,9 +41,6 @@ struct read_struct {
     int newsockfd ;
     int hz ;
 
-    void read_from_simulator() ;
-    vector<double> parser(char* buffer) ;
-    void update_map(vector<double> line_vector, maps* myMaps) ;
 };
 
 

@@ -9,12 +9,11 @@
  * updates the variables map.
  */
 
-void IO::read_from_simulator(int newsockfd, maps* myMaps, int hz) {
+void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
     int n = 0 ;
     char buffer [256] ;
     bzero(buffer,256);
     while (n >= 0) {
-
         n = read(newsockfd, buffer, 255); // read data from simulator
         if (n < 0) { // if read is fail, print error
             perror("ERROR reading from socket");
@@ -70,7 +69,6 @@ vector<double> IO::parser(char* buffer) {
  */
 
 void IO::update_map(vector<double> line_vector, maps* myMaps) {
-    int counter  = 0 ;
     // update every variable to it's location in the map
     myMaps->set_double("read_map", "/instrumentation/airspeed-indicator/indicated-speed-kt", line_vector.at(0));
     myMaps->set_double("read_map", "/instrumentation/altimeter/indicated-altitude-ft",line_vector.at(1));
