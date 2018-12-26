@@ -46,7 +46,7 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                     tempString.push_back(next_char);// push each digit into the temp string
                     index_Count++;
                     next_char = expression[index_Count];
-                    if (!isdigit(next_char)) {      // if next is not digit
+                    if ((!isdigit(next_char)) && (next_char != '.')) {      // if next is not digit
                         parseExpression.push_back(tempString); // push the temp string into vector and break
                         index_Count++;
                         tempString = "" ;
@@ -102,7 +102,12 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                 }
                 index_Count++ ;
                 // gets the variable value from it's map
-                parseExpression.push_back(to_string(myMaps->get_double("symbols_tables", tempString))) ;
+                if (myMaps->is_value_in_map("Map_path", tempString)) {
+                    parseExpression.push_back(to_string(myMaps->get_double("Map_path", tempString))) ;
+                }
+                else {
+                    parseExpression.push_back(to_string(myMaps->get_double("symbols_tables", tempString)));
+                }
             }
             else { // if the char is not digit/operator/alpha/'_', ignore it
                 index_Count++ ;

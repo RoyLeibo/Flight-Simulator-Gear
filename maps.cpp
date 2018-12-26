@@ -28,6 +28,10 @@ void maps::insert_double(string table, string key, double value) {
     {
         case Read_map:
             s_map_read.insert(pair<string,double>(key,value));
+            break;
+
+        case Symbols_table:
+            s_symbole_tables.insert(pair<string,double>(key,value));
     }
 }
 
@@ -37,13 +41,14 @@ void maps::set_double(string table,string key,double value)
     switch (current_table)
     {
         case Symbols_table:
-            s_symbole_tables.insert(pair<string,double>(key,value));
+            s_symbole_tables[key] = value;
+            break;
 
         case Read_map:
             s_map_read[key] = value ;
     }
 }
-void maps::set_string(string table,string key, string path)
+void maps::insert_string(string table,string key, string path)
 {
     Maps current_table = s_map_map[table];
     switch (current_table)
@@ -65,7 +70,7 @@ int maps::get_int(string table,string key)
         case Map_operators:
             return s_map_operators[key];
     }
-    return 1 ;
+    return 0 ;
 }
 
 int maps::get_int(string table,char key) {
@@ -74,15 +79,16 @@ int maps::get_int(string table,char key) {
     {
         case Operator_Priority_map:
             return s_map_operator_priority[key];
-        /*case Map_operators:
-            return s_map_operators[key];*/
+        case Map_operators:
+            return s_map_operators[key];
     }
-    return 1;
+    return 0;
 }
 
 double maps::get_double(string table, string key)
 {
     Maps current_table = s_map_map[table];
+    string path;
     switch(current_table)
     {
         case Symbols_table:
@@ -90,8 +96,11 @@ double maps::get_double(string table, string key)
 
         case Read_map:
             return s_map_read[key] ;
+        case Map_path:
+            path = get_string("map_path",key);
+            return s_map_read[path];
     }
-    return 1 ;
+    return 0;
 }
 
 string maps::get_string(string table,string key)

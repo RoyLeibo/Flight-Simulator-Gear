@@ -30,7 +30,7 @@ class maps {
         maps();
         void insert_double(string table, string key, double value) ;
         void set_double(string table,string key,double value);
-        void set_string(string table,string key, string path);
+        void insert_string(string table,string key, string path);
         int get_int(string table,string key);
         int get_int(string table,char key);
         double get_double(string table, string key);
