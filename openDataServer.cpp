@@ -64,7 +64,10 @@ void openDataServer::execute() {
         exit(1);
     }
     cout << "opening thread" << endl ;
-    open_thread(newsockfd) ;
+    /*char c[1] ;
+    bzero(c, 1) ;
+    while ((read(sockfd, c, 1) < 0)) {}*/
+    open_thread(newsockfd);
 }
 
 // initialize the thread struct and create a new thread

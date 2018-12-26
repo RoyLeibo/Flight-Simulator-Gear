@@ -26,7 +26,6 @@ void Equal::execute()
     is_in_map = s_map->is_value_in_map("read_map", s_variable);
     if (is_in_map)
     {
-        s_map->set_num_variable(s_num, s_variable) ;
-        s_map->set_flag(true) ;
+        IO().write_to_simulator(s_variable, s_num, s_map) ;
     }
 }

@@ -10,12 +10,15 @@
  */
 
 void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
-    int n = 0, end_of_line ;
+    int n = 0, end_of_line, set_counter = 0 ;
     string temp_buffer, remainder = "", end_of_string ;
     char buffer [256] ;
     bzero(buffer,256);
     cout << "I am inside read func" << endl ;
-    while (n >= 0) {
+    while (true) {
+        if (!myMaps->get_flag()) {
+            set_counter++ ;
+        }
         n = read(newsockfd, buffer, 255); // read data from simulator
         if (n < 0) { // if read is fail, print error
             perror("ERROR reading from socket");
@@ -29,7 +32,11 @@ void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
             remainder = temp_buffer.substr(end_of_line+1, temp_buffer.length()-end_of_line) ;
         }
         else {
-            remainder = temp_buffer ;
+            remainder += temp_buffer ;
+        }
+        if (set_counter == 2) {
+            myMaps->set_flag(true) ;
+            set_counter = 0 ;
         }
 
         // to update the variables map
@@ -43,27 +50,20 @@ void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
  * this function will write to the simulator the new variable value
  */
 
-void IO::write_to_simulator(maps* myMaps) {
-    char buffer[256] ;
-    bzero(buffer,256);
+void IO::write_to_simulator(string s_variable, double s_value, maps* myMaps) {
     string set ;
-    bool flag ;
-    while(true) {
-        flag = myMaps->get_flag() ;
-        if (flag) {
-            set = "set " + myMaps->get_s_variable() + " " + to_string(myMaps->get_s_num())
-                       + "\r\n"; // create the command
-            for (int i = 0; i < set.length(); i++) { // moving the command into the buffer
-                buffer[i] = set[i];
-            }
-            if (write(myMaps->get_sockfd(), buffer, strlen(buffer)) < 0) { // write to server. if fail, print error
-                perror("ERROR writing to socket");
-                exit(1);
-            }
-            myMaps->set_flag(false) ;
-            cout << "finish writing" << endl ;
-        }
+    char buffer[256] ;
+    bzero(buffer, 256) ;
+    set = "set " + s_variable + " " + to_string(s_value) + "\r\n"; // create the command
+    for (int i = 0; i < set.length(); i++) { // moving the command into the buffer
+        buffer[i] = set[i];
     }
+    if (write(myMaps->get_sockfd(), buffer, strlen(buffer)) < 0) { // write to server. if fail, print error
+        perror("ERROR writing to socket");
+        exit(1);
+    }
+    cout << "finish writing" << endl ;
+    myMaps->set_flag(false) ;
 }
 
 /* This function's argument is a char* of data from the simulator.

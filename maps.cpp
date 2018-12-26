@@ -28,10 +28,6 @@ void maps::insert_double(string table, string key, double value) {
     {
         case Read_map:
             s_map_read.insert(pair<string,double>(key,value));
-            break;
-
-        case Symbols_table:
-            s_symbole_tables.insert(pair<string,double>(key,value));
     }
 }
 
@@ -41,14 +37,13 @@ void maps::set_double(string table,string key,double value)
     switch (current_table)
     {
         case Symbols_table:
-            s_symbole_tables[key] = value;
-            break;
+            s_symbole_tables.insert(pair<string,double>(key,value));
 
         case Read_map:
             s_map_read[key] = value ;
     }
 }
-void maps::insert_string(string table,string key, string path)
+void maps::set_string(string table,string key, string path)
 {
     Maps current_table = s_map_map[table];
     switch (current_table)
@@ -70,7 +65,7 @@ int maps::get_int(string table,string key)
         case Map_operators:
             return s_map_operators[key];
     }
-    return 0 ;
+    return 1 ;
 }
 
 int maps::get_int(string table,char key) {
@@ -79,28 +74,25 @@ int maps::get_int(string table,char key) {
     {
         case Operator_Priority_map:
             return s_map_operator_priority[key];
-        case Map_operators:
-            return s_map_operators[key];
+        /*case Map_operators:
+            return s_map_operators[key];*/
     }
-    return 0;
+    return 1;
 }
 
 double maps::get_double(string table, string key)
 {
     Maps current_table = s_map_map[table];
-    string path;
     switch(current_table)
     {
         case Symbols_table:
             return s_symbole_tables[key];
 
         case Read_map:
+            while (!flag) {}
             return s_map_read[key] ;
-        case Map_path:
-            path = get_string("map_path",key);
-            return s_map_read[path];
     }
-    return 0;
+    return 1 ;
 }
 
 string maps::get_string(string table,string key)
@@ -257,19 +249,6 @@ map<string,int> maps:: create_map_operators()
     res.insert(pair<string,int>(">=",5));
     res.insert(pair<string,int>("<=",6));
     return res;
-}
-
-void maps::set_num_variable(int s_num, string s_variable) {
-    this->s_num = s_num ;
-    this->s_variable = s_variable ;
-}
-
-int maps::get_s_num() {
-    return this->s_num ;
-}
-
-string maps::get_s_variable() {
-    return this->s_variable ;
 }
 
 int maps::get_sockfd() {

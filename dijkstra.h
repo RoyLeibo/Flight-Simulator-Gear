@@ -11,11 +11,6 @@
 #include <queue>
 #include <map>
 #include <vector>
-#include "Plus.h"
-#include "Minus.h"
-#include "Mul.h"
-#include "Div.h"
-#include "Number.h"
 #include "maps.h"
 
 using namespace std ;

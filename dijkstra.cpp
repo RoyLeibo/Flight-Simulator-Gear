@@ -66,6 +66,27 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                 parseExpression.push_back("-");
                 index_Count += 2;
             }
+
+            else if ((current_char == '-') && (next_char == '(')) {
+                parseExpression.push_back("(") ;
+                parseExpression.push_back("0") ;
+                parseExpression.push_back("-") ;
+                parseExpression.push_back("(") ;
+                int temp_index = index_Count+1 ;
+                while(expression[temp_index] != ')') {
+                    temp_index++ ;
+                }
+                tempString = expression.substr(0, temp_index+1) ;
+                if (temp_index+1 < expression.length()) {
+                    tempString += ")" + expression.substr(temp_index + 1, expression.length() - temp_index);
+                    expression = tempString;
+                }
+                else {
+                    expression.push_back(')') ;
+                }
+                index_Count += 2 ;
+                tempString = "" ;
+            }
             // deals with expression of '/-', '*-', '(-' and '+-' which in those cases
             // the '-' sign is refer ut negative and not minus
             else if (((current_char == '/') || (current_char == '*') || (current_char == '(')
@@ -102,12 +123,7 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                 }
                 index_Count++ ;
                 // gets the variable value from it's map
-                if (myMaps->is_value_in_map("Map_path", tempString)) {
-                    parseExpression.push_back(to_string(myMaps->get_double("Map_path", tempString))) ;
-                }
-                else {
-                    parseExpression.push_back(to_string(myMaps->get_double("symbols_tables", tempString)));
-                }
+                parseExpression.push_back(to_string(myMaps->get_double("symbols_tables", tempString))) ;
             }
             else { // if the char is not digit/operator/alpha/'_', ignore it
                 index_Count++ ;

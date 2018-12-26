@@ -21,8 +21,6 @@ class maps {
         map<char,int> s_map_operator_priority ;
         map<string,double> s_map_read;
         map<string,int>s_map_operators;
-        double s_num ;
-        string s_variable ;
         bool flag ;
         int sockfd ;
 
@@ -30,7 +28,7 @@ class maps {
         maps();
         void insert_double(string table, string key, double value) ;
         void set_double(string table,string key,double value);
-        void insert_string(string table,string key, string path);
+        void set_string(string table,string key, string path);
         int get_int(string table,string key);
         int get_int(string table,char key);
         double get_double(string table, string key);
@@ -42,9 +40,6 @@ class maps {
         map<string,double> create_map_read() ;
         bool is_value_in_map(string table, string value);
         void deletd_value(string key);
-        void set_num_variable(int s_num, string s_variable) ;
-        int get_s_num() ;
-        string get_s_variable() ;
         int get_sockfd() ;
         bool get_flag() ;
         void set_flag(bool flag) ;
