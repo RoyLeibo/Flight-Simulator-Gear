@@ -10,6 +10,7 @@
 
 void* run_read_from_simulator(void* arg) {
     struct read_struct* arg_struct = (read_struct*)arg ;
+    cout << "I am inside thread" << endl ;
     IO().read_from_simulator(arg_struct->newsockfd, arg_struct->hz, arg_struct->myMaps) ;
     pthread_t exit(0) ;
 }
@@ -27,7 +28,6 @@ openDataServer::openDataServer(double port, double hz, maps* myMaps) {
 void openDataServer::execute() {
     int sockfd, newsockfd, clilen;
     struct sockaddr_in serv_addr, cli_addr;
-    IO io ;
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0); // calling to socket function
 
@@ -43,10 +43,14 @@ void openDataServer::execute() {
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(this->port);
 
+    cout << "binding " << endl ;
+
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) { // binding host address
         perror("cannot bind to server");
         exit(1);
     }
+
+    cout << "listeing" << endl ;
 
     listen(sockfd,1); // wait for a connection request
     clilen = sizeof(cli_addr);
@@ -54,10 +58,12 @@ void openDataServer::execute() {
     // accept the connection request
     newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
 
+    cout << "accepting" << endl ;
     if (newsockfd < 0) { // if connection failed, print error
         perror("cannot accept your connection request");
         exit(1);
     }
+    cout << "opening thread" << endl ;
     open_thread(newsockfd) ;
 }
 
@@ -75,6 +81,8 @@ void openDataServer::open_thread(int newsockfd) {
     r_s.newsockfd = newsockfd ;
     r_s.myMaps = myMaps ;
     r_s.hz = hz ;
+
+    cout << "creating thread" << endl ;
 
     // create a thread with the struct and a function which reads data from the simulator,
     // parse it and update the variables map

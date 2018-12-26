@@ -14,17 +14,23 @@
 #include <netinet/in.h>
 #include <string.h>
 #include "command.h"
-#include "IO.h"
+#include "maps.h"
+
+void* run_write_to_simulator(void* arg) ;
 
 class Connect : public command{
 
     string IP ;
     int port ;
+    maps* myMaps ;
 
-    Connect(string IP, double port, IO* io) ;
+public:
+    Connect(string IP, double port, maps* myMaps) ;
     virtual void execute() ;
+    void open_thread() ;
 
 };
+
 
 
 #endif //UNTITLED11_CONNECT_H

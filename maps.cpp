@@ -14,6 +14,7 @@ maps::maps()
     s_map_operator_priority = create_map_operator_priority();
     s_map_read = create_map_read();
     s_map_operators = create_map_operators();
+    this->flag = false ;
 
 }
 
@@ -64,6 +65,7 @@ int maps::get_int(string table,string key)
         case Map_operators:
             return s_map_operators[key];
     }
+    return 1 ;
 }
 
 int maps::get_int(string table,char key) {
@@ -72,9 +74,10 @@ int maps::get_int(string table,char key) {
     {
         case Operator_Priority_map:
             return s_map_operator_priority[key];
-        case Map_operators:
-            return s_map_operators[key];
+        /*case Map_operators:
+            return s_map_operators[key];*/
     }
+    return 1;
 }
 
 double maps::get_double(string table, string key)
@@ -88,6 +91,7 @@ double maps::get_double(string table, string key)
         case Read_map:
             return s_map_read[key] ;
     }
+    return 1 ;
 }
 
 string maps::get_string(string table,string key)
@@ -98,6 +102,7 @@ string maps::get_string(string table,string key)
         case Map_path:
             return s_map_path[key];
     }
+    return "" ;
 }
 
 //crate map of maps ****to check if there is way to return refrens if map***
@@ -166,6 +171,8 @@ map<string,double> maps::create_map_read()
     map_read.insert(pair<string,double>("/controls/flight/flaps",0));
     map_read.insert(pair<string,double>("/controls/engines/current-engine/throttle",0));
     map_read.insert(pair<string,double>("/engines/engine/rpm",0));
+
+    return map_read ;
 }
 
 //get table name and value
@@ -221,6 +228,7 @@ bool maps::is_value_in_map(string table, string value)
             }
 
     }
+    return false ;
 }
 
 void maps::deletd_value(string key)
@@ -241,3 +249,32 @@ map<string,int> maps:: create_map_operators()
     res.insert(pair<string,int>("<=",6));
     return res;
 }
+
+void maps::set_num_variable(int s_num, string s_variable) {
+    this->s_num = s_num ;
+    this->s_variable = s_variable ;
+}
+
+int maps::get_s_num() {
+    return this->s_num ;
+}
+
+string maps::get_s_variable() {
+    return this->s_variable ;
+}
+
+int maps::get_sockfd() {
+    return this->sockfd ;
+}
+
+bool maps::get_flag() {
+    return this->flag ;
+}
+
+void maps::set_flag(bool flag) {
+    this->flag = flag ;
+}
+
+void maps::set_sockfd(int sockfd) {
+    this->sockfd = sockfd ;
+};

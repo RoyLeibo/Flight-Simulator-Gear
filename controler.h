@@ -11,8 +11,6 @@
 #include "maps.h"
 using namespace std;
 
-int g_sockfd ;
-
 class controler
 {
     private:

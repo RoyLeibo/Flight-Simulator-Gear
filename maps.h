@@ -21,6 +21,10 @@ class maps {
         map<char,int> s_map_operator_priority ;
         map<string,double> s_map_read;
         map<string,int>s_map_operators;
+        double s_num ;
+        string s_variable ;
+        bool flag ;
+        int sockfd ;
 
     public:
         maps();
@@ -38,6 +42,13 @@ class maps {
         map<string,double> create_map_read() ;
         bool is_value_in_map(string table, string value);
         void deletd_value(string key);
+        void set_num_variable(int s_num, string s_variable) ;
+        int get_s_num() ;
+        string get_s_variable() ;
+        int get_sockfd() ;
+        bool get_flag() ;
+        void set_flag(bool flag) ;
+        void set_sockfd(int sockfd) ;
 };
 
 

@@ -1,8 +1,8 @@
-//
 // Created by roy on 12/22/18.
 //
 
 #include "IO.h"
+#include "command.h"
 
 /* This function activate after the "OpenDataServer" class is called.
  * The function read 'hz' times per second from the simulator and
@@ -10,18 +10,31 @@
  */
 
 void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
-    int n = 0 ;
+    int n = 0, end_of_line ;
+    string temp_buffer, remainder = "", end_of_string ;
     char buffer [256] ;
     bzero(buffer,256);
+    cout << "I am inside read func" << endl ;
     while (n >= 0) {
         n = read(newsockfd, buffer, 255); // read data from simulator
         if (n < 0) { // if read is fail, print error
             perror("ERROR reading from socket");
         }
+        temp_buffer = string(buffer) ;
+        end_of_line = temp_buffer.find('\n') ;
+        if (end_of_line > -1) {
+            end_of_string = temp_buffer.substr(0, end_of_line) ;
+            remainder += end_of_string ;
+            update_map(parser(remainder), myMaps) ;
+            remainder = temp_buffer.substr(end_of_line+1, temp_buffer.length()-end_of_line) ;
+        }
         else {
-            update_map(parser(buffer), myMaps) ; // calling "update_map" and "parser" functions
-        }                                        // to update the variables map
-        std::this_thread::sleep_for((1s)/hz) ; // sleep a duration to adjust read hz times per second
+            remainder = temp_buffer ;
+        }
+
+        // to update the variables map
+        //cout << "rudder: " << myMaps->get_double("read_map", "/controls/flight/rudder") << " flaps: " << myMaps->get_double("read_map","/controls/flight/flaps") << endl;
+        //std::this_thread::sleep_for(5s) ; // sleep a duration to adjust read hz times per second
     }
 }
 
@@ -30,16 +43,26 @@ void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
  * this function will write to the simulator the new variable value
  */
 
-void IO::write_to_simulator(double s_num, string s_variable) {
+void IO::write_to_simulator(maps* myMaps) {
     char buffer[256] ;
     bzero(buffer,256);
-    string s = "set " + s_variable + " " + to_string(s_num) + "\r\n" ; // create the command
-    for (int i = 0 ; i < s.length() ; i++) { // moving the command into the buffer
-        buffer[i] = s[i] ;
-    }
-    if ((write(g_sockfd, buffer, strlen(buffer)) < 0) { // write to server. if fail, print error
-        perror("ERROR writing to socket");
-        exit(1);
+    string set ;
+    bool flag ;
+    while(true) {
+        flag = myMaps->get_flag() ;
+        if (flag) {
+            set = "set " + myMaps->get_s_variable() + " " + to_string(myMaps->get_s_num())
+                       + "\r\n"; // create the command
+            for (int i = 0; i < set.length(); i++) { // moving the command into the buffer
+                buffer[i] = set[i];
+            }
+            if (write(myMaps->get_sockfd(), buffer, strlen(buffer)) < 0) { // write to server. if fail, print error
+                perror("ERROR writing to socket");
+                exit(1);
+            }
+            myMaps->set_flag(false) ;
+            cout << "finish writing" << endl ;
+        }
     }
 }
 
@@ -48,8 +71,7 @@ void IO::write_to_simulator(double s_num, string s_variable) {
  * into a vector of doubles.
  */
 
-vector<double> IO::parser(char* buffer) {
-    string line = string(buffer) ;
+vector<double> IO::parser(string line) {
     int start_index = 0 ;
     int end_index ;
     vector<double> parse_line ;

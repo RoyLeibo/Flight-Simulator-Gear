@@ -221,16 +221,16 @@ double dijkstra::postFixEva(vector <string> expression) {
              */
             switch (tempOperator) {
                 case(plus):
-                    numbersStack.push(to_string(Plus(Number(leftChild).calculate(), Number(rightChild).calculate()).calculate())) ;
+                    numbersStack.push(to_string(rightChild+leftChild));
                     break ;
                 case(minus):
-                    numbersStack.push(to_string(Minus(Number(leftChild).calculate(), Number(rightChild).calculate()).calculate())) ;
+                    numbersStack.push(to_string(rightChild-leftChild));
                     break ;
                 case(mul):
-                    numbersStack.push(to_string(Mul(Number(leftChild).calculate(), Number(rightChild).calculate()).calculate())) ;
+                    numbersStack.push(to_string(rightChild*leftChild));
                     break ;
                 case(div):
-                    numbersStack.push(to_string(Div(Number(leftChild).calculate(), Number(rightChild).calculate()).calculate())) ;
+                    numbersStack.push(to_string(rightChild/leftChild));
                     break ;
             }
         }
