@@ -68,6 +68,7 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
             }
 
             else if ((current_char == '-') && (next_char == '(')) {
+                parseExpression.push_back("+") ;
                 parseExpression.push_back("(") ;
                 parseExpression.push_back("0") ;
                 parseExpression.push_back("-") ;
@@ -123,7 +124,7 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                 }
                 index_Count++ ;
                 // gets the variable value from it's map
-                parseExpression.push_back(to_string(myMaps->get_double("symbols_tables", tempString))) ;
+                parseExpression.push_back(to_string(myMaps->get_double(tempString))) ;
             }
             else { // if the char is not digit/operator/alpha/'_', ignore it
                 index_Count++ ;
@@ -152,11 +153,6 @@ vector<string> dijkstra::shunting_Yard(vector <string> expression, maps* myMaps)
                 symbolStack.pop();
             }
             symbolStack.pop() ; // pop "(" out
-            /*if (symbols[symbolStack.top()[0]] >= symbols[expression.at(i)[0]]) {
-                outPut.push(symbolStack.top());     // if the priority of the operator is greater,
-                symbolStack.pop();                  // pop it and push into the queue
-                symbolStack.push(expression.at(i)); // push the low priority operator into stack
-            }*/
             continue ;
         }
         if ((isdigit(expression.at(i)[0])) || ((expression.at(i)[0] == '-') && (isdigit(expression.at(i)[1])))) {
@@ -242,16 +238,16 @@ double dijkstra::postFixEva(vector <string> expression) {
              */
             switch (tempOperator) {
                 case(plus):
-                    numbersStack.push(to_string(rightChild+leftChild));
+                    numbersStack.push(to_string(leftChild+rightChild));
                     break ;
                 case(minus):
-                    numbersStack.push(to_string(rightChild-leftChild));
+                    numbersStack.push(to_string(leftChild-rightChild));
                     break ;
                 case(mul):
-                    numbersStack.push(to_string(rightChild*leftChild));
+                    numbersStack.push(to_string(leftChild*rightChild));
                     break ;
                 case(div):
-                    numbersStack.push(to_string(rightChild/leftChild));
+                    numbersStack.push(to_string(leftChild/rightChild));
                     break ;
             }
         }

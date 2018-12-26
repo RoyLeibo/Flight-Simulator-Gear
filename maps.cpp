@@ -14,7 +14,7 @@ maps::maps()
     s_map_operator_priority = create_map_operator_priority();
     s_map_read = create_map_read();
     s_map_operators = create_map_operators();
-    this->flag = false ;
+    this->flag = true ;
 
 }
 
@@ -80,19 +80,27 @@ int maps::get_int(string table,char key) {
     return 1;
 }
 
-double maps::get_double(string table, string key)
+double maps::get_double(string key)
 {
-    Maps current_table = s_map_map[table];
-    switch(current_table)
-    {
-        case Symbols_table:
+    while(true) {
+        if (is_value_in_map("symbols_tables", key)) {
             return s_symbole_tables[key];
-
-        case Read_map:
+        }
+        else if (is_value_in_map("read_map", key)) {
             while (!flag) {}
-            return s_map_read[key] ;
+            return s_map_read[key];
+        }
+        else {
+            if (is_value_in_map("symbols_tables", s_map_path[key])) {
+                return s_symbole_tables[s_map_path[key]];
+            }
+            else if (is_value_in_map("read_map", s_map_path[key])) {
+                while (!flag) {}
+                return s_map_read[s_map_path[key]];
+            }
+        }
+        key = s_map_path[key] ;
     }
-    return 1 ;
 }
 
 string maps::get_string(string table,string key)
@@ -228,6 +236,16 @@ bool maps::is_value_in_map(string table, string value)
                 return true;
             }
 
+        case Read_map:
+            id = s_map_read.find(value);
+            if(id == s_map_read.end())
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
     }
     return false ;
 }

@@ -31,7 +31,7 @@ class maps {
         void set_string(string table,string key, string path);
         int get_int(string table,string key);
         int get_int(string table,char key);
-        double get_double(string table, string key);
+        double get_double(string key);
         string get_string(string table,string key);
         map<string,Maps>create_map_map();
         map<string, int>create_map_command();
