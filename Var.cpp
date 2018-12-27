@@ -22,7 +22,7 @@ void Var::execute ()
    //add the variable to the map with out value
    else
    {
-       s_map->set_double("symbols_tables",s_variable,0.0);
+       s_map->insert_double("symbols_tables",s_variable,0.0);
    }
 
 }

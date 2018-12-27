@@ -11,6 +11,7 @@
 #include "maps.h"
 using namespace std;
 
+
 class controler
 {
     private:

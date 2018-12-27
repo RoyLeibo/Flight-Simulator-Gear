@@ -18,7 +18,7 @@ class BindCommand : public command
     public:
         BindCommand(string key,string path,maps* map);
         virtual void execute();
-}
+};
 
 
 #endif //PORCJECT_BIND_H

@@ -5,7 +5,6 @@
 #include "maps.h"
 #include <string>
 #include <iterator>
-
 #include "IO.h"
 using namespace std;
 
@@ -33,7 +32,7 @@ void maps::insert_double(string table, string key, double value) {
     }
 }
 
-void maps::set_double(string key,double value)
+void maps::set_double(string key, double value)
 {
     bool flag = true ;
     while(flag) {

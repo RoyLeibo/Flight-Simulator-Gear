@@ -9,19 +9,43 @@ int main(int argc, char* argv[] ) {
     controler* control = new controler();
     ifstream pointer;
     //open the file
-    pointer.open(argv[2]);
+    pointer.open(argv[1]);
     string line;
+    string line_two;
     int counter = 0;
     //read line by line until the end of file
-    while(getline(pointer,line))
+    while(getline(pointer,line) && line != "")
     {
-        if (line.substr(0, 5) == "while" && line.substr(0,2) == "if")
+        if (line.substr(0, 5) == "while" || line.substr(0,2) == "if")
         {
-            counter++;
-            while (line[line.length() - 1] != '}' && counter != 0)
+            if(line[line.length()-1] == '{')
             {
-                line = line + ';';
-                getline(pointer, line);
+                counter++;
+            }
+            while ((line[line.length() - 1] != ';' && line[line.length() - 1]  != '}') || counter != 0)
+            {
+                getline(pointer, line_two);
+                if (line_two == "{" || line_two == "}")
+                {
+                    line += line_two +";";
+                    if(line_two == "}")
+                    {
+                        counter--;
+                    }
+                    else
+                    {
+                        counter++;
+                    }
+                }
+                if (line_two != "" && line_two != "{" && line_two != "}")
+                {
+                    if(line[line.length()-1] != ';')
+                    {
+                        line += ";";
+                    }
+                    line += line_two;
+
+                }
                 if(line[line.length()-1] == '{')
                 {
                     counter++;
@@ -36,6 +60,6 @@ int main(int argc, char* argv[] ) {
         control->parsar(control->lexes(line));
 
     }
-    delete(control);
+  //  delete(control);
     return 0;
 }

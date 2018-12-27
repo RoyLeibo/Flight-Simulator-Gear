@@ -5,8 +5,8 @@
 #include "controler.h"
 #include "dijkstra.h"
 #include "command.h"
-#include "openDataServer.h"
-#include "Connect.h"
+//#include "openDataServer.h"
+//#include "Connect.h"
 #include "Var.h"
 #include "BindCommand.h"
 #include "PrintCommand.h"
@@ -49,9 +49,16 @@ vector<std::string> controler::lexes(string line)
         next_char = line[index + 1];
         if(current_char == '{' || current_char== '}')
         {
+            if(word != "") {
+                vector.push_back(word);
+                word = "";
+            }
+            word = "";
+            word =+ current_char;
             vector.push_back(word);
             word = "";
-            vector.push_back(to_string(current_char));
+
+            //vector.push_back(to_string(current_char));
         }
         else if(current_char == ',' )
         {
@@ -60,27 +67,68 @@ vector<std::string> controler::lexes(string line)
         }
         else if(current_char == '"')
         {
-            vector.push_back(word);
-            word = "";
-            word = current_char;
+            if(word[0] == '"')
+            {
+                word += current_char;
+                vector.push_back(word);
+                word = "";
+            }
+            else
+            {
+                vector.push_back(word);
+                word = "";
+                word = current_char;
+            }
         }
         else if(current_char == '=')
         {
-            vector.push_back(word);
-            vector.push_back("=");
-            word = "";
+            if(next_char == '=')
+            {
+                if(word != "")
+                {
+                    vector.push_back(word);
+                }
+                vector.push_back("==");
+                word = "";
+                index++;
+            }
+            else
+            {
+                if(word != "")
+                {
+                    vector.push_back(word);
+                }
+                vector.push_back("=");
+                word = "";
+            }
         }
-        else if(((isspace(current_char) && ((isalpha(next_char) || isdigit(next_char)) || next_char == '(')))
+        else if((isspace(current_char) && ((isalpha(next_char) || isdigit(next_char)) || (next_char == '(')))
         && ((isdigit(word[word.length() - ONE]) || isalpha(word[word.length() - ONE])) || word[word.length() - ONE] == ')' ))
         {
             vector.push_back(word);
             word = "";
         }
-        else if(current_char == '<' || current_char ==  '>' || current_char == '==' || current_char == '>='||
-                current_char == '<=' || current_char == '!=' || current_char == ';')
+        else if((((current_char == '<' || current_char ==  '>')  ||  current_char == ';') || current_char == '!'))
         {
-            vector.push_back(word);
-            word = "";
+            if(next_char != '=' || current_char == ';')
+            {
+                if(word != "") {
+                    vector.push_back(word);
+                    word = "";
+                }
+                word += current_char;
+                vector.push_back(word);
+                word = "";
+            }
+            else
+            {
+                vector.push_back(word);
+                word = "";
+                word = word + current_char + next_char;
+                vector.push_back(word);
+                word = "";
+                index++;
+            }
         }
         else if(!isspace(current_char))
         {
@@ -106,22 +154,18 @@ void controler::parsar(vector<string> vec)
     if(!is_commend)
     {
         //check if the word find in the symbols table
-        bool is_variable = s_map->is_value_in_map("symbols_tables",vec.at(ZERO));
-        if(!is_variable)
+        bool is_variable_map_symbols = s_map->is_value_in_map("symbols_tables",vec.at(ZERO));
+        bool is_variable_map_path =  s_map-> is_value_in_map("map_path",vec.at(ZERO));
+        if(!is_variable_map_symbols && !is_variable_map_path)
         {
             exit(ONE);
         }
         //if yet
         else
         {
-            //
-            if(vec.at(index + TWO) == "bind" )
+            if(vec.at(index) == "=")
             {
-               BindCommand(vec.at(index),vec.at(index+ 3),s_map).execute();
-            }
-            else if(vec.at(index + ONE) == "=")
-            {
-               Equal(vec.at(index),dijkstra().calc(vec.at(index + 2),s_map),s_map).execute();
+               Equal(vec.at(index -1),dijkstra().calc(vec.at(index + 1),s_map),s_map).execute();
             }
             else
             {
@@ -136,20 +180,25 @@ void controler::parsar(vector<string> vec)
         {
             //if the commend is openDataServer
             case 1:
-                openDataServer(dijkstra().calc(vec.at(index++),s_map),
-                        dijkstra().calc(vec.at(index++),s_map))).execute();
+             //   openDataServer(dijkstra().calc(vec.at(index++),s_map),
+               //         dijkstra().calc(vec.at(index++),s_map))).execute();
                 break;
             //if the commend is connect
             case 2:
-                Connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).execute();
+             //   Connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).execute();
                 break;
             //if the commend is ver
             case 3:
-                Var(vec.at(index++),s_map).execute();
-                //if it only site variable
-                if(index >= vec.size())
+                if(vec.size() <= 4) {
+                    Var(vec.at(index++), s_map).execute();
+                    //if it only site variable
+                    if (index >= vec.size()) {
+                        break;
+                    }
+                }
+                else
                 {
-                    break;
+                    index++;
                 }
                 //the command =
             case 4:
@@ -167,7 +216,6 @@ void controler::parsar(vector<string> vec)
                 break;
             //if the commend is print
             case 5:
-                index++;
                 //it is number
                 if(string_isdigit(vec.at(index)))
                 {
@@ -182,7 +230,7 @@ void controler::parsar(vector<string> vec)
                 //it is variable the have on hem bind
                 else if(s_map->is_value_in_map("map_path", vec.at(index)))
                 {
-                    PrintCommand(to_string(s_map->get_double("read_map",vec.at(index)))).execute();
+                    PrintCommand(to_string(s_map->get_double("map_path",vec.at(index)))).execute();
                 }
                 //if it string
                 else if(vec.at(index)[0] == '"')
@@ -197,7 +245,6 @@ void controler::parsar(vector<string> vec)
                 break;
             //commend sleep
             case 6:
-                index++;
                 Sleep(dijkstra().calc(vec.at(index),s_map)).execute();
                 break;
 
@@ -244,13 +291,35 @@ void controler::command_while_if(vector<string> vec, bool flg)
     vector<vector<string>> commend;
     int num_vec;
     int num_index;
-    int counter = ZERO;
+    int counter = 1;
     int start = ZERO;
     int end = ZERO;
+    int time = 0;
 
     while(counter < vec.size())
     {
-        if(vec.at(counter) == ";")
+        if(vec.at(counter) == "if" || vec.at(counter) == "while")
+        {
+            start = counter;
+            while(vec.at(counter-1) != "}" || time != 0)
+            {
+                if(vec.at(counter) == "{")
+                {
+                    time++;
+                }
+                else if(vec.at(counter) == "}")
+                {
+                    time--;
+                }
+                    counter++;
+
+            }
+            end =  counter - ONE;
+            commend.push_back(create_new_vector(vec,start,end));
+            start = counter + 1;
+        }
+
+        else if(vec.at(counter) == ";")
         {
             end =  counter - ONE;
             commend.push_back(create_new_vector(vec,start,end));
@@ -268,5 +337,5 @@ void controler::command_while_if(vector<string> vec, bool flg)
     }
 }
 
-
+controler ::~controler(){}
 

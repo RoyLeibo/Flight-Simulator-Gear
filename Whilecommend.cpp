@@ -20,11 +20,10 @@ void Whilecommend:: execute()
         {
             variable_one = s_map->get_double("symbols_tables", s_vec[0][1]);
         }
-        else if (s_map->is_value_in_map("read_map", s_vec[0][1]))
+        else if (s_map->is_value_in_map("map_path", s_vec[0][1]))
         {
-            variable_one = s_map->get_double("read_map", s_vec[0][1]);
+            variable_one = s_map->get_double("map_path", s_vec[0][1]);
         }
-
         else
         {
             variable_one = stod(s_vec[0][1]);
@@ -34,9 +33,9 @@ void Whilecommend:: execute()
         {
             variable_two = s_map->get_double("symbols_tables", s_vec[0][3]);
         }
-        else if (s_map->is_value_in_map("read_map", s_vec[0][3]))
+        else if (s_map->is_value_in_map("map_path", s_vec[0][3]))
         {
-            variable_two = s_map->get_double("read_map", s_vec[0][3]);
+            variable_two = s_map->get_double("map_path", s_vec[0][3]);
         }
         else
         {
@@ -115,5 +114,6 @@ void Whilecommend::do_while()
     while(index <s_vec.size())
     {
         controler(s_map).parsar(s_vec.at(index));
+        index++;
     }
 }

@@ -10,5 +10,5 @@ PrintCommand::PrintCommand(string str_to_print)
 
 void PrintCommand ::execute()
 {
-    cout<< s_string_to_print;
+    cout<< s_string_to_print<<endl;
 }
