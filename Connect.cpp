@@ -19,9 +19,9 @@ void Connect::execute() {
     struct sockaddr_in serv_addr;
     struct hostent *server;
 
-    myMaps->set_sockfd(socket(AF_INET, SOCK_STREAM, 0)); // calling to socket function
+    myMaps->set_sockfd2(socket(AF_INET, SOCK_STREAM, 0)); // calling to socket function
 
-    if (myMaps->get_sockfd() < 0) { // if the function failed, print error
+    if (myMaps->get_sockfd2() < 0) { // if the function failed, print error
         perror("cannot open socket, please try again");
         exit(1);
     }
@@ -42,7 +42,7 @@ void Connect::execute() {
     cout << "connecting" << endl;
 
     // connect to server, if failed print error
-    if (connect(myMaps->get_sockfd(), (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
+    if (connect(myMaps->get_sockfd2(), (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("cannot connect to server");
         exit(1);
     }

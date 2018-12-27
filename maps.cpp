@@ -5,6 +5,8 @@
 #include "maps.h"
 #include <string>
 #include <iterator>
+
+#include "IO.h"
 using namespace std;
 
 maps::maps()
@@ -31,16 +33,29 @@ void maps::insert_double(string table, string key, double value) {
     }
 }
 
-void maps::set_double(string table,string key,double value)
+void maps::set_double(string key,double value)
 {
-    Maps current_table = s_map_map[table];
-    switch (current_table)
-    {
-        case Symbols_table:
-            s_symbole_tables.insert(pair<string,double>(key,value));
-
-        case Read_map:
-            s_map_read[key] = value ;
+    bool flag = true ;
+    while(flag) {
+        if (is_value_in_map("symbols_tables", key)) {
+            s_symbole_tables[key] = value;
+            flag = false ;
+        }
+        else if (is_value_in_map("read_map", get_string("map_path", key))) {
+            IO().write_to_simulator(get_string("map_path", key), value, this);
+            flag = false ;
+        }
+        else {
+            if (is_value_in_map("symbols_tables", s_map_path[key])) {
+                s_symbole_tables[s_map_path[key]] = value;
+                flag = false ;
+            }
+            else if (is_value_in_map("read_map", get_string("map_path", s_map_path[key]))) {
+                IO().write_to_simulator(get_string("map_path", key), value, this);
+                flag = false ;
+            }
+        }
+        key = s_map_path[key] ;
     }
 }
 void maps::set_string(string table,string key, string path)
@@ -269,8 +284,12 @@ map<string,int> maps:: create_map_operators()
     return res;
 }
 
-int maps::get_sockfd() {
-    return this->sockfd ;
+int maps::get_sockfd1() {
+    return this->sockfd1 ;
+}
+
+int maps::get_sockfd2() {
+    return this->sockfd2 ;
 }
 
 bool maps::get_flag() {
@@ -281,6 +300,10 @@ void maps::set_flag(bool flag) {
     this->flag = flag ;
 }
 
-void maps::set_sockfd(int sockfd) {
-    this->sockfd = sockfd ;
+void maps::set_sockfd1(int sockfd1) {
+    this->sockfd1 = sockfd1 ;
+};
+
+void maps::set_sockfd2(int sockfd2) {
+    this->sockfd2 = sockfd2 ;
 };

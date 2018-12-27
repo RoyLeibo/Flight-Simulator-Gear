@@ -22,12 +22,13 @@ class maps {
         map<string,double> s_map_read;
         map<string,int>s_map_operators;
         bool flag ;
-        int sockfd ;
+        int sockfd1 ;
+        int sockfd2 ;
 
     public:
         maps();
         void insert_double(string table, string key, double value) ;
-        void set_double(string table,string key,double value);
+        void set_double(string key,double value);
         void set_string(string table,string key, string path);
         int get_int(string table,string key);
         int get_int(string table,char key);
@@ -40,10 +41,12 @@ class maps {
         map<string,double> create_map_read() ;
         bool is_value_in_map(string table, string value);
         void deletd_value(string key);
-        int get_sockfd() ;
+        int get_sockfd1() ;
+        int get_sockfd2() ;
         bool get_flag() ;
         void set_flag(bool flag) ;
-        void set_sockfd(int sockfd) ;
+        void set_sockfd1(int sockfd1) ;
+        void set_sockfd2(int sockfd2) ;
 };
 
 

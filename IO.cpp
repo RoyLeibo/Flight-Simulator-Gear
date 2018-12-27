@@ -58,7 +58,7 @@ void IO::write_to_simulator(string s_variable, double s_value, maps* myMaps) {
     for (int i = 0; i < set.length(); i++) { // moving the command into the buffer
         buffer[i] = set[i];
     }
-    if (write(myMaps->get_sockfd(), buffer, strlen(buffer)) < 0) { // write to server. if fail, print error
+    if (write(myMaps->get_sockfd2(), buffer, strlen(buffer)) < 0) { // write to server. if fail, print error
         perror("ERROR writing to socket");
         exit(1);
     }

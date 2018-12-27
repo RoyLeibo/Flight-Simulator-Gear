@@ -26,12 +26,12 @@ openDataServer::openDataServer(double port, double hz, maps* myMaps) {
 }
 
 void openDataServer::execute() {
-    int sockfd, newsockfd, clilen;
+    int newsockfd, clilen;
     struct sockaddr_in serv_addr, cli_addr;
 
-    sockfd = socket(AF_INET, SOCK_STREAM, 0); // calling to socket function
+    myMaps->set_sockfd1(socket(AF_INET, SOCK_STREAM, 0)); // calling to socket function
 
-    if (sockfd < 0) { // if the function failed, print error
+    if (myMaps->get_sockfd1() < 0) { // if the function failed, print error
         perror("cannot open socket, please try again");
         exit(1);
     }
@@ -45,18 +45,18 @@ void openDataServer::execute() {
 
     cout << "binding " << endl ;
 
-    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) { // binding host address
+    if (bind(myMaps->get_sockfd1(), (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) { // binding host address
         perror("cannot bind to server");
         exit(1);
     }
 
     cout << "listeing" << endl ;
 
-    listen(sockfd,1); // wait for a connection request
+    listen(myMaps->get_sockfd1(),1); // wait for a connection request
     clilen = sizeof(cli_addr);
 
     // accept the connection request
-    newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
+    newsockfd = accept(myMaps->get_sockfd1(), (struct sockaddr *)&cli_addr, (socklen_t*)&clilen);
 
     cout << "accepting" << endl ;
     if (newsockfd < 0) { // if connection failed, print error
