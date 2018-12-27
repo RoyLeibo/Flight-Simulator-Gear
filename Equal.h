@@ -12,14 +12,14 @@
 
 class Equal: public command
 {
-    private:
-        string s_variable;
-        double s_num;
-        maps* s_map;
+private:
+    string variable;
+    double s_num;
+    maps* s_map;
 
-    public:
-        Equal(string variable, double num, maps* map);
-        virtual void execute();
+public:
+    Equal(string variable, double num, maps* map);
+    virtual void execute();
 
 };
 

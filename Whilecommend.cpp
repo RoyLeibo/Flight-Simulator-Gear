@@ -18,11 +18,11 @@ void Whilecommend:: execute()
         double variable_two = 0;
         if (s_map->is_value_in_map("symbols_tables", s_vec[0][1]))
         {
-            variable_one = s_map->get_double("symbols_tables", s_vec[0][1]);
+            variable_one = s_map->get_double(s_vec[0][1]);
         }
         else if (s_map->is_value_in_map("map_path", s_vec[0][1]))
         {
-            variable_one = s_map->get_double("map_path", s_vec[0][1]);
+            variable_one = s_map->get_double(s_vec[0][1]);
         }
         else
         {
@@ -31,11 +31,11 @@ void Whilecommend:: execute()
 
         if (s_map->is_value_in_map("symbols_tables", s_vec[0][3]))
         {
-            variable_two = s_map->get_double("symbols_tables", s_vec[0][3]);
+            variable_two = s_map->get_double(s_vec[0][3]);
         }
         else if (s_map->is_value_in_map("map_path", s_vec[0][3]))
         {
-            variable_two = s_map->get_double("map_path", s_vec[0][3]);
+            variable_two = s_map->get_double(s_vec[0][3]);
         }
         else
         {

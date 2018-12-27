@@ -8,7 +8,6 @@
 
 #include "command.h"
 #include "vector"
-#include "maps.h"
 
 class Ifcommand :public command
 {

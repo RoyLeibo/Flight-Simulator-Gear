@@ -27,14 +27,27 @@ void maps::insert_double(string table, string key, double value) {
     Maps current_table = s_map_map[table];
     switch (current_table)
     {
+        case Symbols_table:
+            s_symbole_tables.insert(pair<string,double>(key,value));
+            break ;
         case Read_map:
             s_map_read.insert(pair<string,double>(key,value));
+    }
+}
+
+void maps::set_double(string table, string key, double value) {
+    Maps current_table = s_map_map[table];
+    switch (current_table)
+    {
+        case Read_map:
+            s_map_read[key] = value;
     }
 }
 
 void maps::set_double(string key, double value)
 {
     bool flag = true ;
+    string s = get_string("map_path", key) ;
     while(flag) {
         if (is_value_in_map("symbols_tables", key)) {
             s_symbole_tables[key] = value;
@@ -54,7 +67,9 @@ void maps::set_double(string key, double value)
                 flag = false ;
             }
         }
-        key = s_map_path[key] ;
+        if (flag) {
+            key = s_map_path[key];
+        }
     }
 }
 void maps::set_string(string table,string key, string path)

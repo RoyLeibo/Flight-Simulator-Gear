@@ -5,8 +5,8 @@
 #include "controler.h"
 #include "dijkstra.h"
 #include "command.h"
-//#include "openDataServer.h"
-//#include "Connect.h"
+#include "openDataServer.h"
+#include "Connect.h"
 #include "Var.h"
 #include "BindCommand.h"
 #include "PrintCommand.h"
@@ -165,7 +165,7 @@ void controler::parsar(vector<string> vec)
         {
             if(vec.at(index) == "=")
             {
-               Equal(vec.at(index -1),dijkstra().calc(vec.at(index + 1),s_map),s_map).execute();
+               Equal(vec.at(ZERO),dijkstra().calc(vec.at(TWO),s_map),s_map).execute();
             }
             else
             {
@@ -180,14 +180,14 @@ void controler::parsar(vector<string> vec)
         {
             //if the commend is openDataServer
             case 1:
-             //   openDataServer(dijkstra().calc(vec.at(index++),s_map),
-               //         dijkstra().calc(vec.at(index++),s_map))).execute();
+                openDataServer(dijkstra().calc(vec.at(ONE),s_map),
+                        dijkstra().calc(vec.at(TWO),s_map), s_map).execute();
                 break;
             //if the commend is connect
             case 2:
-             //   Connect(vec.at(index++),dijkstra().calc(vec.at(index++),s_map)).execute();
+                Connect(vec.at(ONE),dijkstra().calc(vec.at(TWO),s_map), s_map).execute();
                 break;
-            //if the commend is ver
+            //if the commend is var
             case 3:
                 if(vec.size() <= 4) {
                     Var(vec.at(index++), s_map).execute();
@@ -225,12 +225,12 @@ void controler::parsar(vector<string> vec)
                 //it is variable that found in symbole tables
                 else if(s_map->is_value_in_map("symbols_tables",vec.at(index)))
                 {
-                    PrintCommand(to_string(s_map->get_double("symbols_tables",vec.at(index)))).execute();
+                    PrintCommand(to_string(s_map->get_double(vec.at(index)))).execute();
                 }
                 //it is variable the have on hem bind
                 else if(s_map->is_value_in_map("map_path", vec.at(index)))
                 {
-                    PrintCommand(to_string(s_map->get_double("map_path",vec.at(index)))).execute();
+                    PrintCommand(to_string(s_map->get_double(vec.at(index)))).execute();
                 }
                 //if it string
                 else if(vec.at(index)[0] == '"')

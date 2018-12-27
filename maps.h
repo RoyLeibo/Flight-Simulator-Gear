@@ -28,6 +28,7 @@ class maps {
     public:
         maps();
         void insert_double(string table, string key, double value) ;
+        void set_double(string table, string key, double value) ;
         void set_double(string key,double value);
         void set_string(string table,string key, string path);
         int get_int(string table,string key);

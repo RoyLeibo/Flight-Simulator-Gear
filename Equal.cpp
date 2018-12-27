@@ -9,11 +9,11 @@
 
 Equal::Equal(string variable, double num, maps* map)
 {
-    s_variable = variable;
-    s_num = num;
-    s_map = map;
+    this->variable = variable;
+    this->s_num = num;
+    this->s_map = map;
 }
 void Equal::execute()
 {
-        s_map->set_double(s_variable, s_num);
+    s_map->set_double(variable, s_num);
 }

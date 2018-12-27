@@ -13,5 +13,5 @@ BindCommand::BindCommand(string key, string path, maps* map)
 void BindCommand::execute()
 {
  //   s_map->deletd_value(s_key);
-    s_map->insert_string("map_path", s_key, s_path);
+    s_map->set_string("map_path", s_key, s_path);
 }
