@@ -77,7 +77,7 @@ vector<std::string> controler::lexes(string line)
             {
                 vector.push_back(word);
                 word = "";
-                word = current_char;
+                //word = current_char;
             }
         }
         else if(current_char == '=')
@@ -134,7 +134,7 @@ vector<std::string> controler::lexes(string line)
         {
             word +=  current_char;
         }
-        if(index == line.length()-TWO )
+        if(index == line.length()-TWO && next_char != '"')
         {
 
             word +=  next_char;
