@@ -18,6 +18,7 @@ class BindCommand : public command
     public:
         BindCommand(string key,string path,maps* map);
         virtual void execute();
+        string delete_quotation_marks(string s_path) ;
 };
 
 

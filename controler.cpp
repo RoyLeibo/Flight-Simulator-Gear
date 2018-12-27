@@ -14,6 +14,7 @@
 #include "Sleep.h"
 #include "Whilecommend.h"
 #include "Ifcommand.h"
+#include "Enterc.h"
 
 #define ONE 1
 #define TWO 2
@@ -35,6 +36,7 @@ vector<std::string> controler::lexes(string line)
 {
     vector<string> vector;
     int index = ZERO;
+    int quotation_marks_cout = 0;
     char current_char;
     char next_char;
     string word;
@@ -67,6 +69,10 @@ vector<std::string> controler::lexes(string line)
         }
         else if(current_char == '"')
         {
+            quotation_marks_cout++ ;
+            if (quotation_marks_cout == 2) {
+                quotation_marks_cout = 0 ;
+            }
             if(word[0] == '"')
             {
                 word += current_char;
@@ -77,10 +83,10 @@ vector<std::string> controler::lexes(string line)
             {
                 vector.push_back(word);
                 word = "";
-                //word = current_char;
+                word = current_char;
             }
         }
-        else if(current_char == '=')
+        else if(current_char == '=' && quotation_marks_cout == 0)
         {
             if(next_char == '=')
             {
@@ -132,9 +138,9 @@ vector<std::string> controler::lexes(string line)
         }
         else if(!isspace(current_char))
         {
-            word +=  current_char;
+            word += current_char;
         }
-        if(index == line.length()-TWO && next_char != '"')
+        if(index == line.length()-TWO)
         {
 
             word +=  next_char;
@@ -256,7 +262,8 @@ void controler::parsar(vector<string> vec)
             case 8:
                 command_while_if(vec, false);
                 break;
-
+            case 9:
+                Enterc().execute() ;
         }
     }
 }

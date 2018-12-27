@@ -63,10 +63,8 @@ void openDataServer::execute() {
         perror("cannot accept your connection request");
         exit(1);
     }
+
     cout << "opening thread" << endl ;
-    /*char c[1] ;
-    bzero(c, 1) ;
-    while ((read(sockfd, c, 1) < 0)) {}*/
     open_thread(myMaps->get_sockfd1());
 }
 

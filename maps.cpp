@@ -79,6 +79,9 @@ void maps::set_string(string table,string key, string path)
     {
         case Map_path:
             s_map_path.insert(pair<string,string>(key,path));
+            if(!is_value_in_map("read_map", path)) {
+                insert_double("read_map", path, 0.0) ;
+            }
     }
 }
 
@@ -169,6 +172,7 @@ map<string, int> maps::create_map_command()
     map_commend.insert(pair<string,int>("sleep",6));
     map_commend.insert(pair<string,int>("while",7));
     map_commend.insert(pair<string,int>("if",8));
+    map_commend.insert(pair<string,int>("Enterc",9));
     return map_commend;
 }
 

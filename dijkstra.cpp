@@ -88,6 +88,27 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                 index_Count += 2 ;
                 tempString = "" ;
             }
+            else if ((expression[0] == '-') && (index_Count == 1) && (isdigit(next_char))) {
+                parseExpression.push_back("(") ;
+                parseExpression.push_back("0") ;
+                parseExpression.push_back("-") ;
+                int temp_index = index_Count+1 ;
+                while((expression[temp_index] == '.') || isdigit(expression[temp_index])) {
+                    temp_index++ ;
+                }
+                tempString = expression.substr(0, temp_index) ;
+                if (temp_index+1 < expression.length()) {
+                    tempString += ")" + expression.substr(temp_index, expression.length() - temp_index);
+                    expression = tempString;
+                }
+                else {
+                    expression.erase(expression.length()-1, 1) ;
+                    expression.push_back(')') ;
+                    expression.push_back('$') ;
+                }
+                index_Count += 1 ;
+                tempString = "" ;
+            }
             // deals with expression of '/-', '*-', '(-' and '+-' which in those cases
             // the '-' sign is refer ut negative and not minus
             else if (((current_char == '/') || (current_char == '*') || (current_char == '(')

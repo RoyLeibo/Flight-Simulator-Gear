@@ -16,6 +16,7 @@ class PrintCommand : public command
     public:
         PrintCommand(string str_to_print);
         virtual void execute();
+        string delete_quotation_marks(string s_path) ;
 };
 
 
