@@ -10,48 +10,67 @@
  */
 
 void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
-    int n = 0, end_of_line, set_counter = 0 ;
-    string temp_buffer, remainder = "", end_of_string ;
+    int n = 0, end_of_line = 0, set_counter = 0 ;
+    string temp_buffer, remainder = "", result, start_of_string ;
     char buffer [256] ;
     bzero(buffer,256);
-    int counter = 0 ;
-    string result = "" ;
+    bool is_end_of_line ;
     cout << "I am inside read func" << endl ;
     while (true) {
         if (!myMaps->get_flag()) {
             set_counter++ ;
         }
+        cout << "reading..." << endl ;
+        memset(buffer, 0, 256) ;
         n = read(newsockfd, buffer, 255); // read data from simulator
         if (n < 0) { // if read is fail, print error
             perror("ERROR reading from socket");
         }
-        temp_buffer = string(buffer, 256) ;
+        temp_buffer = buffer ;
         cout << "buffer---------------" << buffer << endl ;
-        for (int i = 0 ; i < temp_buffer.length() ; i++) {
-            char c = temp_buffer[i] ;
-            if (temp_buffer[i] == ',') {
-                counter++ ;
-                result.push_back(temp_buffer[i]);
-            }
-            else if (temp_buffer[i] == '\n' && counter == 22) {
-              // int u = 0;
-              // while(u != -1) {
-             //  u = result.find('\000', 0);
-
-              //     if (u != -1) {
-                //       result.erase(u, 1);
-                //   }
-             //  }
-
+        is_end_of_line = true ;
+        result = remainder ;
+        while (is_end_of_line) {
+            end_of_line = temp_buffer.find('\n', 0) ;
+            if (end_of_line > -1) {
+                result += temp_buffer.substr(0, end_of_line) ;
+                temp_buffer.erase(0, end_of_line+1) ;
+                cout<< "sending data to parse and update" << endl ;
                 update_map(parser(result), myMaps) ;
-                cout << "result------------ " << result << endl ;
-                result = "" ;
-                counter = 0 ;
+                result.clear() ;
+                remainder.clear() ;
             }
             else {
-                result.push_back(temp_buffer[i]);
+                remainder += temp_buffer ;
+                is_end_of_line = false ;
             }
         }
+
+//        for (int i = 0 ; i < temp_buffer.length() ; i++) {
+//            char c = temp_buffer[i] ;
+//            if (temp_buffer[i] == ',') {
+//                counter++ ;
+//                result.push_back(temp_buffer[i]);
+//            }
+//            else if (temp_buffer[i] == '\n' && counter == 22) {
+//              // int u = 0;
+//              // while(u != -1) {
+//             //  u = result.find('\000', 0);
+//
+//              //     if (u != -1) {
+//                //       result.erase(u, 1);
+//                //   }
+//             //  }
+//
+//                update_map(parser(result), myMaps) ;
+//                cout << "result------------ " << result << endl ;
+//                result = "" ;
+//                counter = 0 ;
+//            }
+//            else {
+//                result.push_back(temp_buffer[i]);
+//            }
+//        }
 
 
 //        cout << "buffer: " << temp_buffer << endl;
@@ -89,7 +108,7 @@ void IO::write_to_simulator(string s_variable, double s_value, maps* myMaps) {
         perror("ERROR writing to socket");
         exit(1);
     }
-    cout << "finish writing" << endl ;
+    cout <<"finish set " << s_variable << " = " << s_value << endl;
     myMaps->set_flag(false) ;
 }
 
@@ -107,9 +126,11 @@ vector<double> IO::parser(string line) {
     for (int i = 0 ; i < 23 ; i++) {
         end_index = line.find(',', start_index) ; // locate the next ',' sign
         // pushes the sub string from it's start until the ',' symbol
+        cout<<"value number " << i << " is: "<< line.substr(start_index, (end_index - start_index)) << endl ;
         parse_line.push_back(stod(line.substr(start_index, (end_index - start_index)))) ;
         start_index = end_index + 1 ; // updating the start count after the last ','
     }
+    cout << "finish parse!" << endl ;
     return parse_line ;
 }
 

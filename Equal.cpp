@@ -15,5 +15,6 @@ Equal::Equal(string variable, double num, maps* map)
 }
 void Equal::execute()
 {
+    cout <<"setting " << this->variable << " = " << this->s_num << endl;
     s_map->set_double(variable, s_num);
 }

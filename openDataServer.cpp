@@ -10,7 +10,6 @@
 
 void* run_read_from_simulator(void* arg) {
     struct read_struct* arg_struct = (read_struct*)arg ;
-    cout << "I am inside thread" << endl ;
     IO().read_from_simulator(arg_struct->newsockfd, arg_struct->hz, arg_struct->myMaps) ;
     pthread_t exit(0) ;
 }
@@ -43,14 +42,11 @@ void openDataServer::execute() {
     serv_addr.sin_addr.s_addr = INADDR_ANY;
     serv_addr.sin_port = htons(this->port);
 
-    cout << "binding " << endl ;
 
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) { // binding host address
         perror("cannot bind to server");
         exit(1);
     }
-
-    cout << "listeing" << endl ;
 
     listen(sockfd,1); // wait for a connection request
     clilen = sizeof(cli_addr);
