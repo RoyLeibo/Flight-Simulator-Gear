@@ -58,7 +58,6 @@ int main(int argc, char* argv[]) {
 
         }
         control->parsar(control->lexes(line));
-
     }
   //  delete(control);
     return 0;

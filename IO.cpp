@@ -14,6 +14,8 @@ void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
     string temp_buffer, remainder = "", end_of_string ;
     char buffer [256] ;
     bzero(buffer,256);
+    int counter = 0 ;
+    string result = "" ;
     cout << "I am inside read func" << endl ;
     while (true) {
         if (!myMaps->get_flag()) {
@@ -23,25 +25,50 @@ void IO::read_from_simulator(int newsockfd, int hz, maps* myMaps) {
         if (n < 0) { // if read is fail, print error
             perror("ERROR reading from socket");
         }
-        temp_buffer = string(buffer) ;
-        end_of_line = temp_buffer.find('\n') ;
-        if (end_of_line > -1) {
-            end_of_string = temp_buffer.substr(0, end_of_line) ;
-            remainder += end_of_string ;
-            update_map(parser(remainder), myMaps) ;
-            remainder = temp_buffer.substr(end_of_line+1, temp_buffer.length()-end_of_line) ;
+        temp_buffer = string(buffer, 256) ;
+        cout << "buffer---------------" << buffer << endl ;
+        for (int i = 0 ; i < temp_buffer.length() ; i++) {
+            char c = temp_buffer[i] ;
+            if (temp_buffer[i] == ',') {
+                counter++ ;
+                result.push_back(temp_buffer[i]);
+            }
+            else if (temp_buffer[i] == '\n' && counter == 22) {
+              // int u = 0;
+              // while(u != -1) {
+             //  u = result.find('\000', 0);
+
+              //     if (u != -1) {
+                //       result.erase(u, 1);
+                //   }
+             //  }
+
+                update_map(parser(result), myMaps) ;
+                cout << "result------------ " << result << endl ;
+                result = "" ;
+                counter = 0 ;
+            }
+            else {
+                result.push_back(temp_buffer[i]);
+            }
         }
-        else {
-            remainder += temp_buffer ;
-        }
-        if (set_counter == 2) {
+
+
+//        cout << "buffer: " << temp_buffer << endl;
+//        end_of_line = temp_buffer.find('\n') ;
+//        if (end_of_line > -1) {
+//            end_of_string = temp_buffer.substr(0, end_of_line) ;
+//            remainder += end_of_string ;
+//            update_map(parser(remainder), myMaps) ;
+//            remainder = temp_buffer.substr(end_of_line+1, temp_buffer.length()-end_of_line) ;
+//        }
+//        else {
+//            remainder += temp_buffer ;
+//        }
+        if (set_counter == 3) {
             myMaps->set_flag(true) ;
             set_counter = 0 ;
         }
-
-        // to update the variables map
-        //cout << "rudder: " << myMaps->get_double("read_map", "/controls/flight/rudder") << " flaps: " << myMaps->get_double("read_map","/controls/flight/flaps") << endl;
-        //std::this_thread::sleep_for(5s) ; // sleep a duration to adjust read hz times per second
     }
 }
 
@@ -74,6 +101,7 @@ void IO::write_to_simulator(string s_variable, double s_value, maps* myMaps) {
 vector<double> IO::parser(string line) {
     int start_index = 0 ;
     int end_index ;
+    cout << "data from simulator: " << line << endl ;
     vector<double> parse_line ;
     line.push_back(',') ; // pushes another ',' for the last iteration of the loop
     for (int i = 0 ; i < 23 ; i++) {
@@ -91,6 +119,7 @@ vector<double> IO::parser(string line) {
  */
 
 void IO::update_map(vector<double> line_vector, maps* myMaps) {
+    cout << "start update" << endl ;
     // update every variable to it's location in the map
     myMaps->set_double("read_map", "/instrumentation/airspeed-indicator/indicated-speed-kt", line_vector.at(0));
     myMaps->set_double("read_map", "/instrumentation/altimeter/indicated-altitude-ft",line_vector.at(1));
@@ -115,4 +144,5 @@ void IO::update_map(vector<double> line_vector, maps* myMaps) {
     myMaps->set_double("read_map", "/controls/flight/flaps",line_vector.at(20));
     myMaps->set_double("read_map", "/controls/engines/current-engine/throttle",line_vector.at(21));
     myMaps->set_double("read_map", "/engines/engine/rpm",line_vector.at(22));
+    cout << "finish update" << endl ;
 }

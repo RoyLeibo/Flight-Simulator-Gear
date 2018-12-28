@@ -24,6 +24,7 @@ private:
     vector<string> convert_to_vector (string expression, maps* myMaps) ;
     vector<string> shunting_Yard(vector <string> expression, maps* myMaps) ;
     double postFixEva(vector <string> expression) ;
+    string variables_to_double(string expression, maps* myMaps) ;
 
 };
 

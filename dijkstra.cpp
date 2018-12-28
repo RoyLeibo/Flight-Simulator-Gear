@@ -18,6 +18,7 @@ double dijkstra::calc(string expression, maps* myMaps) {
  */
 
 vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
+    expression = variables_to_double(expression, myMaps) ;
     int index_Count = 1 ;
     char current_char ;
     char next_char ;
@@ -58,15 +59,24 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
         else if (myMaps->is_value_in_map("operator_priority_map", tempString)) {   // if current is an operator
             // deals with expression of '--' and '++'
             if (((current_char == '-') && (next_char == '-')) || ((current_char == '+') && (next_char == '+'))) {
-                parseExpression.push_back("+") ;
-                index_Count += 2 ;
+                if (index_Count == 1) {
+                    index_Count += 2 ;
+                }
+                else {
+                    parseExpression.push_back("+");
+                    index_Count += 2;
+                }
             }
             // deals with expression of '-+'
             else if ((current_char == '-') && (next_char == '+')) {
-                parseExpression.push_back("-");
-                index_Count += 2;
+                if (index_Count == 1) {
+                    index_Count += 2 ;
+                }
+                else {
+                    parseExpression.push_back("-");
+                    index_Count += 2;
+                }
             }
-
             else if ((current_char == '-') && (next_char == '(')) {
                 parseExpression.push_back("+") ;
                 parseExpression.push_back("(") ;
@@ -117,14 +127,30 @@ vector<string> dijkstra::convert_to_vector(string expression, maps* myMaps) {
                     parseExpression.push_back(tempString);
                     tempString = "";
                     tempString += '-';
-                    tempString += expression[index_Count + 1];
-                    parseExpression.push_back(tempString);
-                    index_Count += 3;
-                }
-                else if (expression[index_Count + 1] == '(') {
-
+                    tempString += expression[index_Count + 1] ;
+                    index_Count += 2 ;
+                    next_char = expression[index_Count] ;
+                    while ((isdigit(next_char)) || (next_char == '.')) { // if next is digit, read all the next digits
+                        // if a '.' has found, insert it to the temp string
+                        if (next_char == '.') {
+                            tempString += next_char;
+                            index_Count++;
+                            next_char = expression[index_Count];
+                            continue;
+                        }
+                        tempString.push_back(next_char);// push each digit into the temp string
+                        index_Count++;
+                        next_char = expression[index_Count];
+                        if ((!isdigit(next_char)) && (next_char != '.')) {      // if next is not digit
+                            parseExpression.push_back(tempString); // push the temp string into vector and break
+                            index_Count++;
+                            tempString = "";
+                            break;
+                        }
+                    }
                 }
             }
+
             // deals with expression of '/+' and '*+' which in this case the '+' is unnecessary
             else if (((current_char == '/') || (current_char == '*')) && (next_char == '+')) {
                 parseExpression.push_back(tempString) ;
@@ -274,4 +300,33 @@ double dijkstra::postFixEva(vector <string> expression) {
         }
     }
     return stod(numbersStack.top()) ;
+}
+
+string dijkstra::variables_to_double(string expression, maps* myMaps) {
+    int index_count = 0 ;
+    char next_char ;
+    string temp_variable = "" ;
+    string result = "" ;
+    while(index_count < expression.length()) {
+        next_char = expression[index_count+1] ;
+        if (isalpha(expression[index_count])) {
+            temp_variable += expression[index_count] ;
+            while((isalpha(next_char)) || isdigit(next_char) || (next_char == '_')) {
+                index_count++ ;
+                temp_variable += expression[index_count] ; // push it into temp string
+                if (index_count+1 == expression.length()) {
+                    break ;
+                }
+                next_char = expression[index_count+1] ;
+            }
+            index_count++ ;
+            result += to_string(myMaps->get_double(temp_variable)) ;
+            temp_variable = "" ;
+        }
+        else {
+            result += expression[index_count] ;
+            index_count++ ;
+        }
+    }
+    return result ;
 }

@@ -114,12 +114,15 @@ int maps::get_int(string table,char key) {
 
 double maps::get_double(string key)
 {
+    int i = 0 ;
     while(true) {
         if (is_value_in_map("symbols_tables", key)) {
             return s_symbole_tables[key];
         }
         else if (is_value_in_map("read_map", key)) {
-            while (!flag) {}
+            cout<< key << "====== before update: " <<  s_map_read[key] << "\n" ;
+            while (!(this->flag)) {}
+            cout<< key << "====== after update: " <<  s_map_read[key] << "\n" ;
             return s_map_read[key];
         }
         else {
@@ -127,7 +130,9 @@ double maps::get_double(string key)
                 return s_symbole_tables[s_map_path[key]];
             }
             else if (is_value_in_map("read_map", s_map_path[key])) {
-                while (!flag) {}
+                cout<< key << "====== before update: " <<  s_map_read[s_map_path[key]] << "\n" ;
+                while (!(this->flag)) {}
+                cout<< key << "====== after update: " <<  s_map_read[s_map_path[key]] << "\n" ;
                 return s_map_read[s_map_path[key]];
             }
         }
