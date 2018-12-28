@@ -6,15 +6,15 @@
 #define PORCJECT_BIND_H
 
 
-#include "command.h"
-#include "maps.h"
+#include "Command.h"
+#include "Maps.h"
 
-class BindCommand : public command
+class BindCommand : public Command
 {
     private:
         string s_key;
         string s_path;
-        maps* s_map;
+        maps* s_maps;
     public:
         BindCommand(string key,string path,maps* map);
         virtual void execute();

@@ -7,11 +7,11 @@
 
 #include <iostream>
 #include <string>
-#include "maps.h"
+#include "Maps.h"
 
 using namespace std ;
 
-class command {
+class Command {
 
     public:
         virtual void execute()=0;

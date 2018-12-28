@@ -2,46 +2,46 @@
 // Created by einat on 12/21/18.
 //
 
-#include "Whilecommend.h"
-#include "controler.h"
+#include "Whilecommand.h"
+#include "Controler.h"
 
-Whilecommend::Whilecommend(vector<vector<string>> vec, maps* map)
+Whilecommand::Whilecommand(vector<vector<string>> vec, maps* map)
 {
     s_vec = vec;
-    s_map = map;
+    s_maps = map;
 }
-void Whilecommend:: execute()
+void Whilecommand:: execute()
 {
     bool flg = true;
     while (flg) {
         double variable_one = 0;
         double variable_two = 0;
-        if (s_map->is_value_in_map("symbols_tables", s_vec[0][1]))
+        if (s_maps->is_value_in_map("symbols_tables", s_vec[0][1]))
         {
-            variable_one = s_map->get_double(s_vec[0][1]);
+            variable_one = s_maps->get_double(s_vec[0][1]);
         }
-        else if (s_map->is_value_in_map("map_path", s_vec[0][1]))
+        else if (s_maps->is_value_in_map("map_path", s_vec[0][1]))
         {
-            variable_one = s_map->get_double(s_vec[0][1]);
+            variable_one = s_maps->get_double(s_vec[0][1]);
         }
         else
         {
             variable_one = stod(s_vec[0][1]);
         }
 
-        if (s_map->is_value_in_map("symbols_tables", s_vec[0][3]))
+        if (s_maps->is_value_in_map("symbols_tables", s_vec[0][3]))
         {
-            variable_two = s_map->get_double(s_vec[0][3]);
+            variable_two = s_maps->get_double(s_vec[0][3]);
         }
-        else if (s_map->is_value_in_map("map_path", s_vec[0][3]))
+        else if (s_maps->is_value_in_map("map_path", s_vec[0][3]))
         {
-            variable_two = s_map->get_double(s_vec[0][3]);
+            variable_two = s_maps->get_double(s_vec[0][3]);
         }
         else
         {
             variable_two = stod(s_vec[0][3]);
         }
-        switch (s_map->get_int("map_operators", s_vec[0][2])) {
+        switch (s_maps->get_int("map_operators", s_vec[0][2])) {
             case 1:
                 if (variable_one < variable_two) {
                     do_while();
@@ -108,12 +108,12 @@ void Whilecommend:: execute()
     }
 }
 
-void Whilecommend::do_while()
+void Whilecommand::do_while()
 {
     int index = 1;
     while(index <s_vec.size())
     {
-        controler(s_map).parsar(s_vec.at(index));
+        controler(s_maps).parsar(s_vec.at(index));
         index++;
     }
 }

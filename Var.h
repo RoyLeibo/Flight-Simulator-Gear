@@ -6,13 +6,13 @@
 #define PORCJECT_VAR_H
 
 
-#include "command.h"
-#include "maps.h"
+#include "Command.h"
+#include "Maps.h"
 
-class Var : public command {
+class Var : public Command {
     private:
         string s_variable;
-        maps* s_map;
+        maps* s_maps;
 
     public:
         Var(string variable, maps* map);

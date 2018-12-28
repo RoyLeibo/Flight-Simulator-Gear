@@ -6,16 +6,16 @@
 #define PORCJECT_EQUAL_H
 
 
-#include "command.h"
-#include "maps.h"
+#include "Command.h"
+#include "Maps.h"
 #include "IO.h"
 
-class Equal: public command
+class Equal: public Command
 {
 private:
     string variable;
     double s_num;
-    maps* s_map;
+    maps* s_maps;
 
 public:
     Equal(string variable, double num, maps* map);

@@ -8,14 +8,14 @@
 #include <vector>
 #include <string>
 #include <map>
-#include "maps.h"
+#include "Maps.h"
 using namespace std;
 
 
 class controler
 {
     private:
-        maps* s_map;
+        maps* s_maps;
         //controler* control;
         bool string_isdigit(string str);
         vector<string> create_new_vector(vector<string> line, int start, int end);

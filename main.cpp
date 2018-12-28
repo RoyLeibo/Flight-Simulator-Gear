@@ -2,7 +2,7 @@
 #include <istream>
 #include <string.h>
 #include <fstream>
-#include "controler.h"
+#include "Controler.h"
 using namespace std;
 
 int main(int argc, char* argv[]) {

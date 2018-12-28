@@ -2,9 +2,9 @@
 // Created by einat on 12/17/18.
 //
 
-#include "controler.h"
-#include "dijkstra.h"
-#include "command.h"
+#include "Controler.h"
+#include "Dijkstra.h"
+#include "Command.h"
 #include "openDataServer.h"
 #include "Connect.h"
 #include "Var.h"
@@ -12,7 +12,7 @@
 #include "PrintCommand.h"
 #include "Equal.h"
 #include "Sleep.h"
-#include "Whilecommend.h"
+#include "Whilecommand.h"
 #include "Ifcommand.h"
 #include "Enterc.h"
 
@@ -22,12 +22,12 @@
 
 controler::controler()
 {
-    s_map = new maps();
+    s_maps = new maps();
 }
 
 controler::controler(maps* map)
 {
-    s_map = map;
+    s_maps = map;
 }
 
 //get string
@@ -154,14 +154,14 @@ vector<std::string> controler::lexes(string line)
 void controler::parsar(vector<string> vec)
 {
     int index = ONE;
-    //check if the first word in the string is commend
-    bool is_commend = s_map->is_value_in_map("map_command",vec.at(ZERO));
-    //if the first word is not commend
-    if(!is_commend)
+    //check if the first word in the string is Command
+    bool is_command = s_maps->is_value_in_map("map_command",vec.at(ZERO));
+    //if the first word is not Command
+    if(!is_command)
     {
         //check if the word find in the symbols table
-        bool is_variable_map_symbols = s_map->is_value_in_map("symbols_tables",vec.at(ZERO));
-        bool is_variable_map_path =  s_map-> is_value_in_map("map_path",vec.at(ZERO));
+        bool is_variable_map_symbols = s_maps->is_value_in_map("symbols_tables",vec.at(ZERO));
+        bool is_variable_map_path =  s_maps-> is_value_in_map("map_path",vec.at(ZERO));
         if(!is_variable_map_symbols && !is_variable_map_path)
         {
             exit(ONE);
@@ -171,7 +171,7 @@ void controler::parsar(vector<string> vec)
         {
             if(vec.at(index) == "=")
             {
-               Equal(vec.at(ZERO),dijkstra().calc(vec.at(TWO),s_map),s_map).execute();
+               Equal(vec.at(ZERO),dijkstra().calc(vec.at(TWO),s_maps),s_maps).execute();
             }
             else
             {
@@ -181,22 +181,22 @@ void controler::parsar(vector<string> vec)
     }
     else
     {
-        int commend = s_map->get_int("map_command",vec.at(ZERO));
-        switch(commend)
+        int command = s_maps->get_int("map_command",vec.at(ZERO));
+        switch(command)
         {
-            //if the commend is openDataServer
+            //if the Command is openDataServer
             case 1:
-                openDataServer(dijkstra().calc(vec.at(ONE),s_map),
-                        dijkstra().calc(vec.at(TWO),s_map), s_map).execute();
+                openDataServer(dijkstra().calc(vec.at(ONE),s_maps),
+                        dijkstra().calc(vec.at(TWO),s_maps), s_maps).execute();
                 break;
-            //if the commend is connect
+            //if the Command is connect
             case 2:
-                Connect(vec.at(ONE),dijkstra().calc(vec.at(TWO),s_map), s_map).execute();
+                Connect(vec.at(ONE),dijkstra().calc(vec.at(TWO),s_maps), s_maps).execute();
                 break;
-            //if the commend is var
+            //if the Command is var
             case 3:
                 if(vec.size() <= 4) {
-                    Var(vec.at(index++), s_map).execute();
+                    Var(vec.at(index++), s_maps).execute();
                     //if it only site variable
                     if (index >= vec.size()) {
                         break;
@@ -206,21 +206,21 @@ void controler::parsar(vector<string> vec)
                 {
                     index++;
                 }
-                //the command =
+                //the Command =
             case 4:
                 index++;
-                //if the next command is bind
+                //if the next Command is bind
                 if(vec.at(index) == "bind")
                 {
-                    BindCommand(vec.at(index - TWO),vec.at(index + ONE),s_map).execute();
+                    BindCommand(vec.at(index - TWO),vec.at(index + ONE),s_maps).execute();
                 }
                 //is it equals to variable / number/ math phrase
                 else
                 {
-                   Equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_map), s_map).execute();
+                   Equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_maps), s_maps).execute();
                 }
                 break;
-            //if the commend is print
+            //if the Command is print
             case 5:
                 //it is number
                 if(string_isdigit(vec.at(index)))
@@ -229,14 +229,14 @@ void controler::parsar(vector<string> vec)
                     PrintCommand(vec.at(index)).execute();
                 }
                 //it is variable that found in symbole tables
-                else if(s_map->is_value_in_map("symbols_tables",vec.at(index)))
+                else if(s_maps->is_value_in_map("symbols_tables",vec.at(index)))
                 {
-                    PrintCommand(to_string(s_map->get_double(vec.at(index)))).execute();
+                    PrintCommand(to_string(s_maps->get_double(vec.at(index)))).execute();
                 }
                 //it is variable the have on hem bind
-                else if(s_map->is_value_in_map("map_path", vec.at(index)))
+                else if(s_maps->is_value_in_map("map_path", vec.at(index)))
                 {
-                    PrintCommand(to_string(s_map->get_double(vec.at(index)))).execute();
+                    PrintCommand(to_string(s_maps->get_double(vec.at(index)))).execute();
                 }
                 //if it string
                 else if(vec.at(index)[0] == '"')
@@ -246,19 +246,19 @@ void controler::parsar(vector<string> vec)
                 //it is phrase
                 else
                 {
-                    PrintCommand(to_string(dijkstra().calc(vec.at(index),s_map))).execute();
+                    PrintCommand(to_string(dijkstra().calc(vec.at(index),s_maps))).execute();
                 }
                 break;
-            //commend sleep
+            //Command sleep
             case 6:
-                Sleep(dijkstra().calc(vec.at(index),s_map)).execute();
+                Sleep(dijkstra().calc(vec.at(index),s_maps)).execute();
                 break;
 
-            //commend while
+            //Command while
             case 7:
                 command_while_if(vec, true);
                 break;
-            //commend if
+            //Command if
             case 8:
                 command_while_if(vec, false);
                 break;
@@ -295,7 +295,7 @@ vector<string> controler::create_new_vector(vector<string> line, int start, int 
 
 void controler::command_while_if(vector<string> vec, bool flg)
 {
-    vector<vector<string>> commend;
+    vector<vector<string>> command;
     int num_vec;
     int num_index;
     int counter = 1;
@@ -322,25 +322,25 @@ void controler::command_while_if(vector<string> vec, bool flg)
 
             }
             end =  counter - ONE;
-            commend.push_back(create_new_vector(vec,start,end));
+            command.push_back(create_new_vector(vec,start,end));
             start = counter + 1;
         }
 
         else if(vec.at(counter) == ";")
         {
             end =  counter - ONE;
-            commend.push_back(create_new_vector(vec,start,end));
+            command.push_back(create_new_vector(vec,start,end));
             start = counter + ONE;
         }
         counter++;
     }
     if (flg == true)
     {
-        Whilecommend(commend, s_map).execute();
+        Whilecommand(command, s_maps).execute();
     }
     else
     {
-       Ifcommand(commend, s_map).execute();
+       Ifcommand(command, s_maps).execute();
     }
 }
 

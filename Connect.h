@@ -13,19 +13,19 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <string.h>
-#include "command.h"
-#include "maps.h"
+#include "Command.h"
+#include "Maps.h"
 
 void* run_write_to_simulator(void* arg) ;
 
-class Connect : public command{
+class Connect : public Command{
 
     string IP ;
     int port ;
-    maps* myMaps ;
+    maps* s_maps ;
 
 public:
-    Connect(string IP, double port, maps* myMaps) ;
+    Connect(string IP, double port, maps* s_maps) ;
     virtual void execute() ;
     void open_thread() ;
 

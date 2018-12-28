@@ -11,20 +11,20 @@
 #include <queue>
 #include <map>
 #include <vector>
-#include "maps.h"
+#include "Maps.h"
 
 using namespace std ;
 
 class dijkstra {
 
 public:
-    double calc (string expression, maps* myMaps) ;
+    double calc (string expression, maps* s_maps) ;
 
 private:
-    vector<string> convert_to_vector (string expression, maps* myMaps) ;
-    vector<string> shunting_Yard(vector <string> expression, maps* myMaps) ;
+    vector<string> convert_to_vector (string expression, maps* s_maps) ;
+    vector<string> shunting_Yard(vector <string> expression, maps* s_maps) ;
     double postFixEva(vector <string> expression) ;
-    string variables_to_double(string expression, maps* myMaps) ;
+    string variables_to_double(string expression, maps* s_maps) ;
 
 };
 

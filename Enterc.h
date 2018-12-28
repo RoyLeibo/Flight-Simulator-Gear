@@ -5,9 +5,9 @@
 #ifndef UNTITLED11_ENTERC_H
 #define UNTITLED11_ENTERC_H
 
-#include "command.h"
+#include "Command.h"
 
-class Enterc: public command {
+class Enterc: public Command {
 public:
     void execute() ;
 };

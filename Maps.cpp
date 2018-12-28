@@ -2,7 +2,7 @@
 // Created by einat on 12/17/18.
 //
 
-#include "maps.h"
+#include "Maps.h"
 #include <string>
 #include <iterator>
 #include "IO.h"
@@ -28,7 +28,7 @@ void maps::insert_double(string table, string key, double value) {
     switch (current_table)
     {
         case Symbols_table:
-            s_symbole_tables.insert(pair<string,double>(key,value));
+            s_symbol_table.insert(pair<string,double>(key,value));
             break ;
         case Read_map:
             s_map_read.insert(pair<string,double>(key,value));
@@ -44,27 +44,31 @@ void maps::set_double(string table, string key, double value) {
     }
 }
 
+/* This function gets a key and a value to update this key,
+ * The function searches in the 2 maps that there is values in,
+ * and checks if the variable is binded to some other variable.
+ */
+
 void maps::set_double(string key, double value)
 {
-    bool flag = true ;
-    string s = get_string("map_path", key) ;
+    bool flag = true ; // flag for loop
     while(flag) {
-        if (is_value_in_map("symbols_tables", key)) {
-            s_symbole_tables[key] = value;
-            flag = false ;
+        if (is_value_in_map("symbols_tables", key)) { // check if the key is in the symbole_table map
+            s_symbol_table[key] = value; // updated value
+            flag = false ; // exit loop
         }
-        else if (is_value_in_map("read_map", get_string("map_path", key))) {
-            IO().write_to_simulator(get_string("map_path", key), value, this);
-            flag = false ;
+        else if (is_value_in_map("read_map", get_string("map_path", key))) { // check if the key is in the map_read
+            IO().write_to_simulator(get_string("map_path", key), value, this); // write to simulator the data
+            flag = false ; // exit loop
         }
-        else {
-            if (is_value_in_map("symbols_tables", s_map_path[key])) {
-                s_symbole_tables[s_map_path[key]] = value;
-                flag = false ;
+        else { // check if the key is binded to another variable
+            if (is_value_in_map("symbols_tables", s_map_path[key])) { // check in symbols_tables map
+                s_symbol_table[s_map_path[key]] = value; // update data
+                flag = false ; // exit loop
             }
-            else if (is_value_in_map("read_map", get_string("map_path", s_map_path[key]))) {
-                IO().write_to_simulator(get_string("map_path", key), value, this);
-                flag = false ;
+            else if (is_value_in_map("read_map", get_string("map_path", s_map_path[key]))) { // check in map_read
+                IO().write_to_simulator(get_string("map_path", key), value, this); // update data
+                flag = false ; // exit loop
             }
         }
         if (flag) {
@@ -72,6 +76,10 @@ void maps::set_double(string key, double value)
         }
     }
 }
+
+/* This function gets a variables, value and a map to update.
+ * The functions sets the new value of the variables in the specific map
+ */
 void maps::set_string(string table,string key, string path)
 {
     Maps current_table = s_map_map[table];
@@ -85,8 +93,9 @@ void maps::set_string(string table,string key, string path)
     }
 }
 
-//get name table and key
+//get name map and string key
 //return the value in this key
+
 int maps::get_int(string table,string key)
 {
     Maps current_table = s_map_map[table];
@@ -100,6 +109,9 @@ int maps::get_int(string table,string key)
     return 1 ;
 }
 
+//get name map and char key
+//return the value in this key
+
 int maps::get_int(string table,char key) {
     Maps current_table = s_map_map[table];
     switch(current_table)
@@ -112,33 +124,43 @@ int maps::get_int(string table,char key) {
     return 1;
 }
 
+/* This function gets a key and returns the double value of that key.
+ * if the value is in the map_read map, the function check the confirmation of
+ * updated data flag.
+ * If data access denied (flag is false) the function stops (endless while loop)
+ * until the flag has been updated to true.
+ * The function also checks if the variable is binded to another variable.
+ */
+
 double maps::get_double(string key)
 {
     int i = 0 ;
     while(true) {
-        if (is_value_in_map("symbols_tables", key)) {
-            return s_symbole_tables[key];
+        if (is_value_in_map("symbols_tables", key)) { // check if the key is in the symbole_table map
+            return s_symbol_table[key]; //return double value
         }
-        else if (is_value_in_map("read_map", key)) {
+        else if (is_value_in_map("read_map", key)) { // check if the key is in the map_read
             cout<< key << "====== before update: " <<  s_map_read[key] << "\n" ;
-            while (!(this->flag)) {}
+            while (!(this->flag)) {} // if flag is false, wait until it is true
             cout<< key << "====== after update: " <<  s_map_read[key] << "\n" ;
-            return s_map_read[key];
+            return s_map_read[key]; //return double value
         }
         else {
-            if (is_value_in_map("symbols_tables", s_map_path[key])) {
-                return s_symbole_tables[s_map_path[key]];
+            if (is_value_in_map("symbols_tables", s_map_path[key])) { // check if in the symbole_table map
+                return s_symbol_table[s_map_path[key]]; //return double value
             }
-            else if (is_value_in_map("read_map", s_map_path[key])) {
+            else if (is_value_in_map("read_map", s_map_path[key])) { // check if in the map_read
                 cout<< key << "====== before update: " <<  s_map_read[s_map_path[key]] << "\n" ;
-                while (!(this->flag)) {}
+                while (!(this->flag)) {} // if flag is false, wait until it is true
                 cout<< key << "====== after update: " <<  s_map_read[s_map_path[key]] << "\n" ;
-                return s_map_read[s_map_path[key]];
+                return s_map_read[s_map_path[key]]; //return double value
             }
         }
         key = s_map_path[key] ;
     }
 }
+
+// returns a string in the table
 
 string maps::get_string(string table,string key)
 {
@@ -151,7 +173,8 @@ string maps::get_string(string table,string key)
     return "" ;
 }
 
-//crate map of maps ****to check if there is way to return refrens if map***
+//crate map of maps
+
 map<string,Maps> maps::create_map_map()
 {
     map<string,Maps > map_map;
@@ -165,21 +188,24 @@ map<string,Maps> maps::create_map_map()
 
 }
 
-//crate map of command ****to check if there is way to return refrens if map***
+//crate map of Command
+
 map<string, int> maps::create_map_command()
 {
-    map <string,int> map_commend;
-    map_commend.insert(pair<string,int>("openDataServer",1));
-    map_commend.insert(pair<string,int>("connect",2));
-    map_commend.insert(pair<string,int>("var",3));
-    map_commend.insert(pair<string,int>("=",4));
-    map_commend.insert(pair<string,int>("print",5));
-    map_commend.insert(pair<string,int>("sleep",6));
-    map_commend.insert(pair<string,int>("while",7));
-    map_commend.insert(pair<string,int>("if",8));
-    map_commend.insert(pair<string,int>("Enterc",9));
-    return map_commend;
+    map <string,int> map_command;
+    map_command.insert(pair<string,int>("openDataServer",1));
+    map_command.insert(pair<string,int>("connect",2));
+    map_command.insert(pair<string,int>("var",3));
+    map_command.insert(pair<string,int>("=",4));
+    map_command.insert(pair<string,int>("print",5));
+    map_command.insert(pair<string,int>("sleep",6));
+    map_command.insert(pair<string,int>("while",7));
+    map_command.insert(pair<string,int>("if",8));
+    map_command.insert(pair<string,int>("Enterc",9));
+    return map_command;
 }
+
+// create an operator priority map
 
 map<char, int> maps::create_map_operator_priority() {
     map <char, int> map_operator_priority ;
@@ -191,6 +217,8 @@ map<char, int> maps::create_map_operator_priority() {
     map_operator_priority.insert(pair<char,int>(')',4));
     return map_operator_priority ;
 }
+
+// create a map_read map
 
 map<string,double> maps::create_map_read()
 {
@@ -224,6 +252,7 @@ map<string,double> maps::create_map_read()
 
 //get table name and value
 //return if the value is in the map
+
 bool maps::is_value_in_map(string table, string value)
 {
     Maps current_table = s_map_map[table];
@@ -244,8 +273,8 @@ bool maps::is_value_in_map(string table, string value)
                 return true;
             }
         case Symbols_table:
-            id = s_symbole_tables.find(value);
-            if(id == s_symbole_tables.end())
+            id = s_symbol_table.find(value);
+            if(id == s_symbol_table.end())
             {
                 return false;
             }
@@ -288,12 +317,16 @@ bool maps::is_value_in_map(string table, string value)
     return false ;
 }
 
+// delete value from map
+
 void maps::deletd_value(string key)
 {
     map<string,double>::iterator id;
-    id = s_symbole_tables.find(key);
-    s_symbole_tables.erase(id);
+    id = s_symbol_table.find(key);
+    s_symbol_table.erase(id);
 }
+
+// creates an operators map
 
 map<string,int> maps:: create_map_operators()
 {

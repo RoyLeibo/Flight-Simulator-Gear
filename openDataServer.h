@@ -14,22 +14,22 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <pthread.h>
-#include "command.h"
+#include "Command.h"
 #include "IO.h"
-#include "maps.h"
+#include "Maps.h"
 
 void* run_read_from_simulator(void* arg) ;
 
-class openDataServer: public command {
+class openDataServer: public Command {
     private:
         double port ;
         double hz ;
-        maps* myMaps ;
+        maps* s_maps ;
 
     public:
-        openDataServer(double port, double hz, maps* myMaps) ;
+        openDataServer(double port, double hz, maps* s_maps) ;
         virtual void execute() ;
-        void open_thread(int newsockfd) ;
+        void open_thread(int new_sock_fd) ;
 
 };
 
@@ -37,8 +37,8 @@ class openDataServer: public command {
 // and updates the variables maps
 
 struct read_struct {
-    maps* myMaps ;
-    int newsockfd ;
+    maps* s_maps ;
+    int new_sock_fd ;
     int hz ;
 
 };

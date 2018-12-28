@@ -8,12 +8,12 @@ BindCommand::BindCommand(string key, string path, maps* map)
 {
     this->s_key = key;
     this->s_path = delete_quotation_marks(path) ;
-    this->s_map = map;
+    this->s_maps = map;
 }
 void BindCommand::execute()
 {
- //   s_map->deletd_value(s_key);
-    s_map->set_string("map_path", s_key, s_path);
+ //   s_maps->deletd_value(s_key);
+    s_maps->set_string("map_path", s_key, s_path);
 }
 
 string BindCommand::delete_quotation_marks(string s_path) {

@@ -6,9 +6,9 @@
 #define PORCJECT_SLEEP_H
 
 
-#include "command.h"
+#include "Command.h"
 
-class Sleep : public command
+class Sleep : public Command
 {
     private:
     double s_time;

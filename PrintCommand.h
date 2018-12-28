@@ -6,9 +6,9 @@
 #define PORCJECT_PRINT_H
 
 
-#include "command.h"
+#include "Command.h"
 
-class PrintCommand : public command
+class PrintCommand : public Command
 {
     private:
         string s_string_to_print;
