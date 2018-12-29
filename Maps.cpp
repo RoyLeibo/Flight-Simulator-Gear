@@ -19,7 +19,6 @@ maps::maps()
 
 }
 
-//*****check if it only to symbols tables if yes no need of switch case****
 //get map name,key and value
 //insert the value in the map in the right place
 

@@ -13,6 +13,8 @@ Sleep:: Sleep(double time)
 {
     this->s_time = time;
 }
+
+//stop the program to number of milliseconds according to data member s_time
 void Sleep:: execute() {
     sleep_for(milliseconds((int)s_time));
 }

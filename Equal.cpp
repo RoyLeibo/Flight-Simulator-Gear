@@ -13,6 +13,8 @@ Equal::Equal(string variable, double num, maps* map)
     this->s_num = num;
     this->s_maps = map;
 }
+
+//function that updating the value of the variable to s_num
 void Equal::execute()
 {
     cout <<"setting " << this->variable << " = " << this->s_num << endl;

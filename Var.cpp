@@ -11,6 +11,7 @@ Var::Var(string variable, maps* map)
     s_maps = map;
 }
 
+//add the data member s_variable and to symbols_tables map with the value zero
 void Var::execute ()
 {
    bool check_variable = s_maps->is_value_in_map("symbols_tables",s_variable);

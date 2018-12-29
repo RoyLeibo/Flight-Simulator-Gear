@@ -30,8 +30,9 @@ controler::controler(maps* map)
     s_maps = map;
 }
 
-//get string
-//divid the string to
+/*function that get string line add divide the line to variable, opretors and expressions
+ *add insert them to vector
+ */
 vector<std::string> controler::lexes(string line)
 {
     vector<string> vector;
@@ -48,105 +49,138 @@ vector<std::string> controler::lexes(string line)
     for(int index = ZERO; index < line.length()- ONE; index++)
     {
         current_char = line[index];
-        next_char = line[index + 1];
+        next_char = line[index + ONE];
+        //check if the cher is { or }
         if(current_char == '{' || current_char== '}')
         {
+            //if the previous word is not empty
             if(word != "") {
+                //push the word to the vector
                 vector.push_back(word);
                 word = "";
             }
-            word = "";
+            //word = "";
+            //push { or } to the vector
             word =+ current_char;
             vector.push_back(word);
             word = "";
-
-            //vector.push_back(to_string(current_char));
         }
+        //if the char is , the previous word is finished push the word to the vector
         else if(current_char == ',' )
         {
             vector.push_back(word);
             word = "";
         }
+        //if the char is "
         else if(current_char == '"')
         {
             quotation_marks_cout++ ;
-            if (quotation_marks_cout == 2) {
-                quotation_marks_cout = 0 ;
+            //check if it is the second quotation mark
+            if (quotation_marks_cout == TWO) {
+                //zero the counter
+                quotation_marks_cout = ZERO ;
             }
-            if(word[0] == '"')
+            //if it the second quotation mark
+            if(word[ZERO] == '"')
             {
+                //add the mark to the word and push the word to vector
                 word += current_char;
                 vector.push_back(word);
                 word = "";
             }
+            //if it the first mark
             else
             {
+                //push the previous word o vector and start the next wort with "
                 vector.push_back(word);
                 word = "";
                 word = current_char;
             }
         }
+        //if the char is = and the counter quotation_marks is zero
         else if(current_char == '=' && quotation_marks_cout == 0)
         {
+            //check if the next char id also =
             if(next_char == '=')
             {
+                //if the previous word is not empty push the word to the vector
                 if(word != "")
                 {
                     vector.push_back(word);
                 }
+                //push the operator == to the vector
                 vector.push_back("==");
                 word = "";
+                //dont check the next char
                 index++;
+
             }
+            //if the nex char is not =
             else
             {
+                //if the previous word is not empty push the word to the vector
                 if(word != "")
                 {
                     vector.push_back(word);
                 }
+                //push the opretor = to the vector
                 vector.push_back("=");
                 word = "";
             }
         }
+        //if the char is space and the next char is alpha or digit or ( and also the the end of the word is
+        //digit or alpha or ) the word is finished
         else if((isspace(current_char) && ((isalpha(next_char) || isdigit(next_char)) || (next_char == '(')))
-        && ((isdigit(word[word.length() - ONE]) || isalpha(word[word.length() - ONE])) || word[word.length() - ONE] == ')' ))
+        && ((isdigit(word[word.length() - ONE]) || isalpha(word[word.length() - ONE])) ||
+        word[word.length() - ONE] == ')' ))
         {
             vector.push_back(word);
             word = "";
         }
-        else if((((current_char == '<' || current_char ==  '>')  ||  current_char == ';') || current_char == '!'))
+        //if the char is < or > or ; or ! and the counter of quotation mark is zero
+        else if(((((current_char == '<' || current_char ==  '>')  ||  current_char == ';') || current_char == '!')) &&
+        quotation_marks_cout == 0)
         {
+            //if the next char is =  or ;
             if(next_char != '=' || current_char == ';')
             {
+                //if the previous word is not empty push the word to the vector
                 if(word != "") {
                     vector.push_back(word);
                     word = "";
                 }
+                //push the operator to the vector
                 word += current_char;
                 vector.push_back(word);
                 word = "";
             }
+            //if the next cher is different
             else
             {
+                //push the previous word to the vector
                 vector.push_back(word);
                 word = "";
+                //push the char and the next char to the vector togther
                 word = word + current_char + next_char;
                 vector.push_back(word);
                 word = "";
+                //do not need to check the next char
                 index++;
             }
         }
+        //if the char is not space push the char to the vector
         else if(!isspace(current_char))
         {
             word += current_char;
         }
+        //if the for loop coning to end and the next char also to the word
         if(index == line.length()-TWO)
         {
-
             word +=  next_char;
         }
 
     }
+    //push the word to the vector
     vector.push_back(word);
     return vector;
 }

@@ -10,12 +10,14 @@ BindCommand::BindCommand(string key, string path, maps* map)
     this->s_path = delete_quotation_marks(path) ;
     this->s_maps = map;
 }
+
+//insert the ke and path to map_path
 void BindCommand::execute()
 {
- //   s_maps->deletd_value(s_key);
     s_maps->set_string("map_path", s_key, s_path);
 }
 
+//function that get the path and return string with out quotation marks
 string BindCommand::delete_quotation_marks(string s_path) {
     if (s_path[0] != '"') {
         return s_path ;
