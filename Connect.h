@@ -28,6 +28,7 @@ public:
     Connect(string IP, double port, maps* s_maps) ;
     virtual void execute() ;
     void open_thread() ;
+    ~Connect() ;
 
 };
 

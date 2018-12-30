@@ -50,3 +50,5 @@ void Connect::execute() {
         exit(1);
     }
 }
+
+Connect::~Connect(){}

@@ -27,6 +27,7 @@ class controler
       vector<std::string> lexes(string line);
       void parsar(vector<string> vec);
       ~controler();
+      void exit_code(controler* control) ;
 };
 
 

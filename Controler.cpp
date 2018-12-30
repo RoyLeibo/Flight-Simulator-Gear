@@ -20,6 +20,9 @@
 #define TWO 2
 #define ZERO 0
 
+enum Commands {not_used, openDataServer_command, connect_command, var_command, equal_command, print_command,
+        sleep_command, while_command, if_command, Enter_c};
+
 controler::controler()
 {
     s_maps = new maps();
@@ -226,16 +229,16 @@ void controler::parsar(vector<string> vec)
         switch(command)
         {
             //if the Command is openDataServer
-            case 1:
+            case openDataServer_command:
                 openDataServer(dijkstra().calc(vec.at(ONE),s_maps),
                         dijkstra().calc(vec.at(TWO),s_maps), s_maps).execute();
                 break;
             //if the Command is connect
-            case 2:
+            case connect_command:
                 Connect(vec.at(ONE),dijkstra().calc(vec.at(TWO),s_maps), s_maps).execute();
                 break;
             //if the Command is var
-            case 3:
+            case var_command:
                 if(vec.size() <= 4) {
                     Var(vec.at(index++), s_maps).execute();
                     //if it only site variable
@@ -248,7 +251,7 @@ void controler::parsar(vector<string> vec)
                     index++;
                 }
             //the Command =
-            case 4:
+            case equal_command:
                 index++;
                 //if the next Command is bind
                 if(vec.at(index) == "bind")
@@ -262,7 +265,7 @@ void controler::parsar(vector<string> vec)
                 }
                 break;
             //if the Command is print
-            case 5:
+            case print_command:
                 //it is number
                 if(string_isdigit(vec.at(index)))
                 {
@@ -291,19 +294,19 @@ void controler::parsar(vector<string> vec)
                 }
                 break;
             //Command sleep
-            case 6:
+            case sleep_command:
                 Sleep(dijkstra().calc(vec.at(index),s_maps)).execute();
                 break;
 
             //Command while
-            case 7:
+            case while_command:
                 command_while_if(vec, true);
                 break;
             //Command if
-            case 8:
+            case if_command:
                 command_while_if(vec, false);
                 break;
-            case 9:
+            case Enter_c:
                 Enterc().execute() ;
         }
     }
@@ -408,5 +411,10 @@ void controler::command_while_if(vector<string> vec, bool flg)
     }
 }
 
-controler ::~controler(){}
+void controler::exit_code(controler* control) {
+    close(s_maps->get_sockfd1()) ;
+    close(s_maps->get_sockfd2()) ;
+}
+
+controler::~controler(){}
 

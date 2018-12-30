@@ -2,6 +2,12 @@
 #include <istream>
 #include <string.h>
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <unistd.h>
+#include <netinet/in.h>
 #include "Controler.h"
 using namespace std;
 
@@ -71,6 +77,6 @@ int main(int argc, char* argv[]) {
         control->parsar(control->lexes(line));
     }
     pointer.close();
-  //  delete(control);
+    control->exit_code(control) ;
     return 0;
 }

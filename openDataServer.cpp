@@ -9,9 +9,11 @@
 // sent from the simulator
 
 void* run_read_from_simulator(void* arg) {
-    struct read_struct* arg_struct = (read_struct*)arg ;
-    IO().read_from_simulator(arg_struct->new_sock_fd, arg_struct->hz, arg_struct->s_maps) ;
-    pthread_t exit(0) ;
+    struct read_struct* arg_struct_p = (read_struct*)arg ;
+    struct read_struct arg_struct = *arg_struct_p;
+    delete arg_struct_p;
+    IO().read_from_simulator(arg_struct.new_sock_fd, arg_struct.hz, arg_struct.s_maps) ;
+    pthread_exit(0) ;
 }
 
 openDataServer::openDataServer(double port, double hz, maps* s_maps) {
@@ -76,19 +78,17 @@ void openDataServer::open_thread(int new_sock_fd) {
 
     // after connection has established, initialize a thread for reading data from the simulator
     pthread_t tid ;
-    pthread_attr_t attr ;
-    pthread_attr_init(&attr) ;
 
     // initialize struct
-    struct read_struct r_s ;
-    r_s.new_sock_fd = new_sock_fd ;
-    r_s.s_maps = s_maps ;
-    r_s.hz = hz ;
+    struct read_struct* r_s = new read_struct;
+    r_s->new_sock_fd = new_sock_fd ;
+    r_s->s_maps = s_maps ;
+    r_s->hz = hz ;
 
     cout << "creating thread" << endl ;
 
     // create a thread with the struct and a function which reads data from the simulator,
     // parse it and update the variables map
-    pthread_create(&tid, &attr, run_read_from_simulator, &r_s) ;
+    pthread_create(&tid, nullptr, run_read_from_simulator, r_s) ;
 }
 

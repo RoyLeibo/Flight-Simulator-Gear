@@ -56,6 +56,7 @@ class maps {
         void set_flag(bool flag) ;
         void set_sockfd1(int sockfd1) ;
         void set_sockfd2(int sockfd2) ;
+        ~maps() ;
 };
 
 
