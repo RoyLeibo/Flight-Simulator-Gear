@@ -5,6 +5,8 @@
 #include "Controler.h"
 using namespace std;
 
+void code_exit(controler* control);
+
 int main(int argc, char* argv[]) {
     controler* control = new controler();
     ifstream pointer;
@@ -71,6 +73,12 @@ int main(int argc, char* argv[]) {
         control->parsar(control->lexes(line));
     }
     pointer.close();
-  //  delete(control);
+    code_exit(control);
     return 0;
+}
+
+void code_exit(controler* control)
+{
+    delete(control);
+    exit(0);
 }

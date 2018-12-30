@@ -362,3 +362,5 @@ void maps::set_sockfd1(int sockfd1) {
 void maps::set_sockfd2(int sockfd2) {
     this->sockfd2 = sockfd2 ;
 };
+
+Maps:: ~Maps(){}
