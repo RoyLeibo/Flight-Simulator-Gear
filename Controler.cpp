@@ -185,36 +185,43 @@ vector<std::string> controler::lexes(string line)
     return vector;
 }
 
+//function that get vector and activates the Command
 void controler::parsar(vector<string> vec)
 {
     int index = ONE;
-    //check if the first word in the string is Command
+    //check if the first word in the vector is Command
     bool is_command = s_maps->is_value_in_map("map_command",vec.at(ZERO));
     //if the first word is not Command
     if(!is_command)
     {
-        //check if the word find in the symbols table
+        //check if the word find in the symbols table or map path
         bool is_variable_map_symbols = s_maps->is_value_in_map("symbols_tables",vec.at(ZERO));
         bool is_variable_map_path =  s_maps-> is_value_in_map("map_path",vec.at(ZERO));
+        //if the variable is not in the maps it is illegal line
         if(!is_variable_map_symbols && !is_variable_map_path)
         {
             exit(ONE);
         }
-        //if yet
+        //if variable is in the maps
         else
         {
+            //if the second word in the vector is =
             if(vec.at(index) == "=")
             {
+                //the command is equal
                Equal(vec.at(ZERO),dijkstra().calc(vec.at(TWO),s_maps),s_maps).execute();
             }
+            //if the second word is not = it is illegal line
             else
             {
                 exit(ONE);
             }
         }
     }
+    //if the first word id command
     else
     {
+        //according to the maps command go the right case
         int command = s_maps->get_int("map_command",vec.at(ZERO));
         switch(command)
         {
@@ -240,7 +247,7 @@ void controler::parsar(vector<string> vec)
                 {
                     index++;
                 }
-                //the Command =
+            //the Command =
             case 4:
                 index++;
                 //if the next Command is bind
@@ -248,7 +255,7 @@ void controler::parsar(vector<string> vec)
                 {
                     BindCommand(vec.at(index - TWO),vec.at(index + ONE),s_maps).execute();
                 }
-                //is it equals to variable / number/ math phrase
+                //is it equals to variable / number/ math expression
                 else
                 {
                    Equal(vec.at(index - TWO),dijkstra().calc(vec.at(index),s_maps), s_maps).execute();
@@ -262,7 +269,7 @@ void controler::parsar(vector<string> vec)
 
                     PrintCommand(vec.at(index)).execute();
                 }
-                //it is variable that found in symbole tables
+                //it is variable that found in symbol tables
                 else if(s_maps->is_value_in_map("symbols_tables",vec.at(index)))
                 {
                     PrintCommand(to_string(s_maps->get_double(vec.at(index)))).execute();
@@ -277,7 +284,7 @@ void controler::parsar(vector<string> vec)
                 {
                    PrintCommand(vec.at(index)).execute();
                 }
-                //it is phrase
+                //it is expression
                 else
                 {
                     PrintCommand(to_string(dijkstra().calc(vec.at(index),s_maps))).execute();
@@ -302,21 +309,36 @@ void controler::parsar(vector<string> vec)
     }
 }
 
+//function that check if string is number
 bool controler::string_isdigit(string str)
 {
+    int count_point = 0;
     for(int i = ZERO; i < str.length(); i++)
     {
+        //check if the char is digit
         if(!isdigit(str[i]))
         {
-            return false;
+            //if the char is . and one to the counter
+            if(str[i] == '.')
+            {
+                count_point++;
+            }
+            //if the char is not number and the counter point id bigger than one return false
+            if(count_point > 1)
+            {
+                return false;
+            }
         }
     }
+    //if the the characters are digit or with one point return true
     return true;
 }
 
+//function that get vector and index of start and end and return new vector
 vector<string> controler::create_new_vector(vector<string> line, int start, int end)
 {
     vector<string> res;
+    //push all the word between the index of the start to the index of the end to new vector
     while (start <= end)
     {
         res.push_back(line.at(start));
@@ -327,6 +349,7 @@ vector<string> controler::create_new_vector(vector<string> line, int start, int 
 
 }
 
+//Command if or while
 void controler::command_while_if(vector<string> vec, bool flg)
 {
     vector<vector<string>> command;
@@ -339,6 +362,7 @@ void controler::command_while_if(vector<string> vec, bool flg)
 
     while(counter < vec.size())
     {
+        //if there id loop/condition inside loop/condition
         if(vec.at(counter) == "if" || vec.at(counter) == "while")
         {
             start = counter;
@@ -368,10 +392,12 @@ void controler::command_while_if(vector<string> vec, bool flg)
         }
         counter++;
     }
+    //while command
     if (flg == true)
     {
         Whilecommand(command, s_maps).execute();
     }
+    //if command
     else
     {
        Ifcommand(command, s_maps).execute();
