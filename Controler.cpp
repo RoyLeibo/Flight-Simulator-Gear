@@ -408,8 +408,5 @@ void controler::command_while_if(vector<string> vec, bool flg)
     }
 }
 
-controler ::~controler()
-{
-    delete(s_maps);
-}
+controler ::~controler(){}
 
