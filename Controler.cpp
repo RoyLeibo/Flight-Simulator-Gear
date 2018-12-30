@@ -365,7 +365,9 @@ void controler::command_while_if(vector<string> vec, bool flg)
         //if there id loop/condition inside loop/condition
         if(vec.at(counter) == "if" || vec.at(counter) == "while")
         {
+            //keep the start index
             start = counter;
+            //until the loop/condition is not over keep going
             while(vec.at(counter-1) != "}" || time != 0)
             {
                 if(vec.at(counter) == "{")
@@ -380,12 +382,14 @@ void controler::command_while_if(vector<string> vec, bool flg)
 
             }
             end =  counter - ONE;
+            //create new vector
             command.push_back(create_new_vector(vec,start,end));
             start = counter + 1;
         }
-
+        //if the line id end and it not while or if command
         else if(vec.at(counter) == ";")
         {
+            //create new vector from the line
             end =  counter - ONE;
             command.push_back(create_new_vector(vec,start,end));
             start = counter + ONE;
