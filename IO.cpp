@@ -15,19 +15,16 @@ void IO::read_from_simulator(int new_sock_fd, int hz, maps* s_maps) {
     char buffer [256] ;
     bzero(buffer,256);
     bool is_end_of_line ;
-    cout << "I am inside read func" << endl ;
     while (true) {
         if (!s_maps->get_flag()) { // if a set committed, the data has to update first in the map
             set_counter++ ; // count the number of loop run when flag is false
         }
-        cout << "reading..." << endl ;
         memset(buffer, 0, 256) ; // set buffer to 0
         n = read(new_sock_fd, buffer, 255); // read data from simulator
         if (n < 0) { // if read is fail, print error
             perror("ERROR reading from socket");
         }
         temp_buffer = buffer ;
-        cout << "buffer---------------" << buffer << endl ;
         is_end_of_line = true ;
         result = remainder ; // adding the remainder data from last read
         while (is_end_of_line) {
@@ -35,7 +32,6 @@ void IO::read_from_simulator(int new_sock_fd, int hz, maps* s_maps) {
             if (end_of_line > -1) { // if \n found
                 result += temp_buffer.substr(0, end_of_line) ; // adding to result the sub string
                 temp_buffer.erase(0, end_of_line+1) ; // erasing the data added to result
-                cout<< "sending data to parse and update" << endl ;
                 update_map(parser(result), s_maps) ; // updating the data map with the new data received
                 result.clear() ; // clear result string
                 remainder.clear() ; // clear remainder string
@@ -69,7 +65,6 @@ void IO::write_to_simulator(string s_variable, double s_value, maps* s_maps) {
         perror("ERROR writing to socket");
         exit(1);
     }
-    cout <<"finish set " << s_variable << " = " << s_value << endl;
     s_maps->set_flag(false) ; // after write to server, the main thread cannot continue until the new
 }                             //  data has been updated in the map
 
@@ -81,17 +76,14 @@ void IO::write_to_simulator(string s_variable, double s_value, maps* s_maps) {
 vector<double> IO::parser(string line) {
     int start_index = 0 ;
     int end_index ;
-    cout << "data from simulator: " << line << endl ;
     vector<double> parse_line ;
     line.push_back(',') ; // pushes another ',' for the last iteration of the loop
     for (int i = 0 ; i < 23 ; i++) {
         end_index = line.find(',', start_index) ; // locate the next ',' sign
         // pushes the sub string from it's start until the ',' symbol
-        cout<<"value number " << i << " is: "<< line.substr(start_index, (end_index - start_index)) << endl ;
         parse_line.push_back(stod(line.substr(start_index, (end_index - start_index)))) ;
         start_index = end_index + 1 ; // updating the start count after the last ','
     }
-    cout << "finish parse!" << endl ;
     return parse_line ;
 }
 
@@ -101,7 +93,6 @@ vector<double> IO::parser(string line) {
  */
 
 void IO::update_map(vector<double> line_vector, maps* s_maps) {
-    cout << "start update" << endl ;
     // update every variable to it's location in the map
     s_maps->set_double("read_map", "/instrumentation/airspeed-indicator/indicated-speed-kt", line_vector.at(0));
     s_maps->set_double("read_map", "/instrumentation/altimeter/indicated-altitude-ft",line_vector.at(1));
@@ -126,5 +117,4 @@ void IO::update_map(vector<double> line_vector, maps* s_maps) {
     s_maps->set_double("read_map", "/controls/flight/flaps",line_vector.at(20));
     s_maps->set_double("read_map", "/controls/engines/current-engine/throttle",line_vector.at(21));
     s_maps->set_double("read_map", "/engines/engine/rpm",line_vector.at(22));
-    cout << "finish update" << endl ;
 }

@@ -54,21 +54,17 @@ void openDataServer::execute() {
         exit(1);
     }
 
-    cout << "listening" << endl ;
-
     listen(sockfd,1); // wait for a connection request
     clilen = sizeof(cli_addr);
 
     // accept the connection request
     s_maps->set_sockfd1(accept(sockfd, (struct sockaddr *)&cli_addr, (socklen_t*)&clilen));
 
-    cout << "accepting" << endl ;
     if (s_maps->get_sockfd1() < 0) { // if connection failed, print error
         perror("cannot accept your connection request");
         exit(1);
     }
 
-    cout << "opening thread" << endl ;
     open_thread(s_maps->get_sockfd1());
 }
 
@@ -85,7 +81,6 @@ void openDataServer::open_thread(int new_sock_fd) {
     r_s->s_maps = s_maps ;
     r_s->hz = hz ;
 
-    cout << "creating thread" << endl ;
 
     // create a thread with the struct and a function which reads data from the simulator,
     // parse it and update the variables map

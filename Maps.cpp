@@ -139,9 +139,7 @@ double maps::get_double(string key)
             return s_symbol_table[key]; //return double value
         }
         else if (is_value_in_map("read_map", key)) { // check if the key is in the map_read
-            cout<< key << "====== before update: " <<  s_map_read[key] << "\n" ;
             while (!(this->flag)) {} // if flag is false, wait until it is true
-            cout<< key << "====== after update: " <<  s_map_read[key] << "\n" ;
             return s_map_read[key]; //return double value
         }
         else {
@@ -149,9 +147,7 @@ double maps::get_double(string key)
                 return s_symbol_table[s_map_path[key]]; //return double value
             }
             else if (is_value_in_map("read_map", s_map_path[key])) { // check if in the map_read
-                cout<< key << "====== before update: " <<  s_map_read[s_map_path[key]] << "\n" ;
                 while (!(this->flag)) {} // if flag is false, wait until it is true
-                cout<< key << "====== after update: " <<  s_map_read[s_map_path[key]] << "\n" ;
                 return s_map_read[s_map_path[key]]; //return double value
             }
         }

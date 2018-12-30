@@ -42,8 +42,6 @@ void Connect::execute() {
     bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
     serv_addr.sin_port = htons(this->port);
 
-    cout << "connecting" << endl;
-
     // connect to server, if failed print error
     if (connect(s_maps->get_sockfd2(), (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("cannot connect to server");
